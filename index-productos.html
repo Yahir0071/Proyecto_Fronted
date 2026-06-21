@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos - Sistema de Almacén</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Productos y Stock - LMZ Almacenes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/index-productos.css">
 </head>
 <body class="bg-slate-100 text-slate-900 font-sans antialiased min-h-screen flex">
     <!-- Sidebar -->
@@ -20,19 +21,19 @@
         </div>
         
         <nav class="flex-1 p-4 space-y-1.5 text-sm">
-            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors">
+            <a href="index-productos.html" class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors active">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
                 Productos y Stock
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
+            <a href="index-ubicaciones.html" class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4"></path>
                 </svg>
                 Ubicaciones / Estantes
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
+            <a href="index-pedidos.html" class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
@@ -52,7 +53,7 @@
             <div class="flex items-center gap-2 text-sm text-slate-500 font-medium">
                 <span>Módulos</span>
                 <span>/</span>
-                <span class="text-slate-800 font-semibold">Productos</span>
+                <span class="text-slate-800 font-semibold">Productos y Stock</span>
             </div>
             <div class="flex items-center gap-3">
                 <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -61,7 +62,7 @@
         </header>
 
         <!-- Main Content Area -->
-        <main class="p-8 flex-1">
+        <main class="p-8 flex-1 overflow-y-auto">
             <div class="max-w-4xl mx-auto space-y-6">
                 <div class="mt-4">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Catálogo de Almacén</h2>
@@ -90,11 +91,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Nombre del Producto</label>
-                                <input type="text" id="nombre" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Ej. Gaseosa Inca Kola">
+                                <input type="text" id="nombre" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Laptop Dell XPS">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Categoría</label>
-                                <input type="text" id="categoria" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Ej. Gaseosas">
+                                <input type="text" id="categoria" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Electrónica">
                             </div>
                         </div>
 
@@ -105,7 +106,7 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Stock Alerta</label>
-                                <input type="number" id="stockMinimo" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="5" value="5">
+                                <input type="number" id="stockMinimo" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="10">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Unidad</label>
@@ -153,21 +154,18 @@
 
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Cantidad a Añadir</label>
-                            <input type="number" id="cantidadEntrante" required min="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-bold text-lg text-center" placeholder="0">
+                            <input type="number" id="cantidadEntrante" required min="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm" placeholder="100">
                         </div>
 
                         <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors mt-2">
                             Confirmar Ingreso de Stock
                         </button>
                     </form>
-
-                    <!-- Toast Notification -->
-                    <div id="status-toast" class="mx-6 mb-6 p-3 rounded-lg text-sm text-center hidden font-medium"></div>
                 </div>
             </div>
         </main>
     </div>
 
-    <script src="script.js"></script>
+    <script src="js/index-productos.js"></script>
 </body>
 </html>
