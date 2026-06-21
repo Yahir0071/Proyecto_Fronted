@@ -324,3 +324,8 @@ if (document.readyState === 'loading') {
 } else {
     inicializarPedidos();
 }
+
+function logout() {
+    localStorage.removeItem("logueado");
+    window.location.href = "index-login.html";
+}

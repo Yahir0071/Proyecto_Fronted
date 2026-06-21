@@ -211,3 +211,8 @@ if (document.readyState === 'loading') {
 } else {
     inicializarUbicaciones();
 }
+
+function logout() {
+    localStorage.removeItem("logueado");
+    window.location.href = "index-login.html";
+}

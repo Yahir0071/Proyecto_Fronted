@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SmartWare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/index-pedidos.css">
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-xl shadow-lg" style="width:350px;">
+        <h2 class="text-2xl font-bold text-center mb-6">SmartWare</h2>
+
+        <form id="loginForm">
+            <div class="mb-4">
+                <label>Usuario</label>
+                <input type="text" id="usuario" class="w-full" required>
+            </div>
+
+            <div class="mb-4">
+                <label>Contraseña</label>
+                <input type="password" id="password" class="w-full" required>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white">
+                Iniciar Sesión
+            </button>
+        </form>
+
+        <p id="mensaje" class="text-red-700 text-center mt-3"></p>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(e){
+            e.preventDefault();
+
+            const usuario = document.getElementById("usuario").value;
+            const password = document.getElementById("password").value;
+
+            if(usuario === "admin" && password === "1234"){
+                localStorage.setItem("logueado", "true");
+                window.location.href = "index-productos.html";
+            } else {
+                document.getElementById("mensaje").textContent =
+                "Usuario o contraseña incorrectos";
+            }
+        });
+    </script>
+
+</body>
+</html>

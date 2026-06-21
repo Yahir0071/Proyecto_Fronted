@@ -198,3 +198,8 @@ if (document.readyState === 'loading') {
 } else {
     inicializarProductos();
 }
+
+function logout() {
+    localStorage.removeItem("logueado");
+    window.location.href = "index-login.html";
+}
