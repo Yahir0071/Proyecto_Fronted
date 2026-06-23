@@ -22,6 +22,10 @@ function inicializarUbicaciones() {
     
     // Cargar ubicaciones
     cargarUbicacionesModulo();
+    cargarAlmacenesParaSelect();
+
+    // [NUEVO] Escuchador para el formulario de crear Almacén:
+    document.getElementById('form-almacen').addEventListener('submit', crearAlmacen);
 
     // Event listeners para formularios
     document.getElementById('form-ubicacion').addEventListener('submit', crearUbicacion);
@@ -93,6 +97,38 @@ function actualizarSelectsUbicaciones(ubicaciones) {
             select.value = selectedValue;
         }
     });
+}
+
+// Crear nueva ubicación
+async function crearUbicacion(e) {
+    e.preventDefault();
+
+    const ubicacion = {
+        almacenId: parseInt(document.getElementById('ubicacion-almacen').value),
+        nombre: document.getElementById('ubicacion-nombre').value,
+        descripcion: document.getElementById('ubicacion-descripcion').value
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/ubicaciones`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ubicacion)
+        });
+
+        if (response.ok) {
+            mostrarToast('✅ Ubicación creada exitosamente', 'success');
+            document.getElementById('form-ubicacion').reset();
+            cargarUbicacionesModulo();
+        } else {
+            mostrarToast('Error al crear ubicación', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarToast('Error de conexión', 'error');
+    }
 }
 
 // Conectar ubicaciones
@@ -174,102 +210,6 @@ async function calcularRuta(algoritmo) {
     }
 }
 
-// 📦 Cargar almacenes desde el Backend al selector HTML
-async function cargarAlmacenesEnSelect() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/almacenes`);
-        if (!response.ok) throw new Error('Error al obtener almacenes');
-        
-        const almacenes = await response.json();
-        almacenesDisponibles = almacenes;
-
-        const select = document.getElementById('ubicacion-almacen-select');
-        select.innerHTML = '<option value="">Selecciona un almacén...</option>';
-        
-        almacenes.forEach(almacen => {
-            const option = document.createElement('option');
-            option.value = almacen.id; 
-            option.textContent = almacen.nombre;
-            select.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error cargando almacenes:', error);
-        mostrarToast('Error al cargar lista de almacenes', 'error');
-    }
-}
-
-async function crearAlmacen(e) {
-    e.preventDefault();
-
-    console.log("🚀 ¡El formulario de Almacén se ha activado!");
-
-    const almacenDTO = {
-        nombre: document.getElementById('almacen-nombre').value,
-        descripcion: document.getElementById('almacen-descripcion').value
-    };
-
-    console.log("Datos capturados listos para enviar:", almacenDTO);
-    console.log("Ruta destino del fetch:", `${API_BASE_URL}/almacenes`);
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/almacenes`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(almacenDTO)
-        });
-
-        console.log("Respuesta del servidor recibida. Status:", response.status);
-
-        if (response.ok) {
-            mostrarToast('✅ Almacén creado exitosamente', 'success');
-            document.getElementById('form-almacen').reset();
-            await cargarAlmacenesEnSelect(); // Recarga el select al instante
-        } else {
-            const errorText = await response.text();
-            mostrarToast(errorText || 'Error al crear almacén', 'error');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        mostrarToast('Error de conexión con el servidor', 'error');
-    }
-}
-
-// 📍 Registrar Ubicación amarrada a un Almacén existente
-async function crearUbicacion(e) {
-    e.preventDefault();
-
-    const almacenIdSelected = parseInt(document.getElementById('ubicacion-almacen-select').value);
-    
-    const ubicacionDTO = {
-        nombre: document.getElementById('ubicacion-nombre').value,
-        descripcion: document.getElementById('ubicacion-descripcion').value,
-        almacen: {
-            id: almacenIdSelected
-        }
-    };
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/ubicaciones`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(ubicacionDTO)
-        });
-
-        if (response.ok) {
-            mostrarToast('✅ Ubicación registrada correctamente', 'success');
-            document.getElementById('form-ubicacion').reset();
-            
-            cargarUbicacionesModulo(); 
-        } else {
-            const errorText = await response.text();
-            mostrarToast(errorText || 'Error al crear la ubicación', 'error');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        mostrarToast('Error de conexión', 'error');
-    }
-}
-
 // Ejecutar cuando el DOM esté listo
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', inicializarUbicaciones);
@@ -280,4 +220,62 @@ if (document.readyState === 'loading') {
 function logout() {
     localStorage.removeItem("logueado");
     window.location.href = "index-login.html";
+}
+
+// ==================== LÓGICA DE ALMACENES ====================
+
+async function crearAlmacen(e) {
+    e.preventDefault();
+
+    // 1. Construimos el DTO exacto que pide Spring Boot
+    const nuevoAlmacen = {
+        nombre: document.getElementById('almacen-nombre').value.trim(),
+        direccion: document.getElementById('almacen-direccion').value.trim(),
+        filas: parseInt(document.getElementById('almacen-filas').value),
+        columnas: parseInt(document.getElementById('almacen-columnas').value)
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/almacenes`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(nuevoAlmacen)
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            mostrarToast(`✅ Almacén "${data.nombre}" creado con ID: ${data.id}`, 'success');
+            document.getElementById('form-almacen').reset();
+            cargarAlmacenesParaSelect();
+        } else {
+            const err = await response.text();
+            mostrarToast(`Error del servidor: ${err}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error al crear almacén:', error);
+        mostrarToast('Error de red al intentar conectar con /api/almacenes', 'error');
+    }
+}
+
+// Cargar almacenes en el select de "Crear Ubicación"
+async function cargarAlmacenesParaSelect() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/almacenes`);
+        const almacenes = await response.json();
+
+        const select = document.getElementById('ubicacion-almacen');
+        select.innerHTML = '<option value="">Seleccione un almacén...</option>';
+
+        almacenes.forEach(alm => {
+            const option = document.createElement('option');
+            option.value = alm.id;
+            option.textContent = `${alm.nombre} (${alm.direccion})`;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error cargando almacenes para el select:', error);
+        document.getElementById('ubicacion-almacen').innerHTML = '<option value="">Error al cargar almacenes</option>';
+    }
 }
