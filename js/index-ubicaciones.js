@@ -95,37 +95,6 @@ function actualizarSelectsUbicaciones(ubicaciones) {
     });
 }
 
-// Crear nueva ubicación
-async function crearUbicacion(e) {
-    e.preventDefault();
-
-    const ubicacion = {
-        nombre: document.getElementById('ubicacion-nombre').value,
-        descripcion: document.getElementById('ubicacion-descripcion').value
-    };
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/ubicaciones`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ubicacion)
-        });
-
-        if (response.ok) {
-            mostrarToast('✅ Ubicación creada exitosamente', 'success');
-            document.getElementById('form-ubicacion').reset();
-            cargarUbicacionesModulo();
-        } else {
-            mostrarToast('Error al crear ubicación', 'error');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        mostrarToast('Error de conexión', 'error');
-    }
-}
-
 // Conectar ubicaciones
 async function conectarUbicaciones(e) {
     e.preventDefault();
@@ -202,6 +171,102 @@ async function calcularRuta(algoritmo) {
     } catch (error) {
         console.error('Error:', error);
         mostrarToast('Error al calcular ruta', 'error');
+    }
+}
+
+// 📦 Cargar almacenes desde el Backend al selector HTML
+async function cargarAlmacenesEnSelect() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/almacenes`);
+        if (!response.ok) throw new Error('Error al obtener almacenes');
+        
+        const almacenes = await response.json();
+        almacenesDisponibles = almacenes;
+
+        const select = document.getElementById('ubicacion-almacen-select');
+        select.innerHTML = '<option value="">Selecciona un almacén...</option>';
+        
+        almacenes.forEach(almacen => {
+            const option = document.createElement('option');
+            option.value = almacen.id; 
+            option.textContent = almacen.nombre;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error cargando almacenes:', error);
+        mostrarToast('Error al cargar lista de almacenes', 'error');
+    }
+}
+
+async function crearAlmacen(e) {
+    e.preventDefault();
+
+    console.log("🚀 ¡El formulario de Almacén se ha activado!");
+
+    const almacenDTO = {
+        nombre: document.getElementById('almacen-nombre').value,
+        descripcion: document.getElementById('almacen-descripcion').value
+    };
+
+    console.log("Datos capturados listos para enviar:", almacenDTO);
+    console.log("Ruta destino del fetch:", `${API_BASE_URL}/almacenes`);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/almacenes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(almacenDTO)
+        });
+
+        console.log("Respuesta del servidor recibida. Status:", response.status);
+
+        if (response.ok) {
+            mostrarToast('✅ Almacén creado exitosamente', 'success');
+            document.getElementById('form-almacen').reset();
+            await cargarAlmacenesEnSelect(); // Recarga el select al instante
+        } else {
+            const errorText = await response.text();
+            mostrarToast(errorText || 'Error al crear almacén', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarToast('Error de conexión con el servidor', 'error');
+    }
+}
+
+// 📍 Registrar Ubicación amarrada a un Almacén existente
+async function crearUbicacion(e) {
+    e.preventDefault();
+
+    const almacenIdSelected = parseInt(document.getElementById('ubicacion-almacen-select').value);
+    
+    const ubicacionDTO = {
+        nombre: document.getElementById('ubicacion-nombre').value,
+        descripcion: document.getElementById('ubicacion-descripcion').value,
+        almacen: {
+            id: almacenIdSelected
+        }
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/ubicaciones`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(ubicacionDTO)
+        });
+
+        if (response.ok) {
+            mostrarToast('✅ Ubicación registrada correctamente', 'success');
+            document.getElementById('form-ubicacion').reset();
+            
+            cargarUbicacionesModulo(); 
+        } else {
+            const errorText = await response.text();
+            mostrarToast(errorText || 'Error al crear la ubicación', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarToast('Error de conexión', 'error');
     }
 }
 
