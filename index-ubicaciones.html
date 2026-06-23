@@ -70,6 +70,45 @@
             <div class="max-w-5xl mx-auto space-y-6">
                 <div class="mt-4">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Gestión de Ubicaciones y Estantes</h2>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+                    <div class="p-6 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-slate-800">1. Registrar Nuevo Almacén</h3>
+                            <p class="text-xs text-slate-500 mt-1">Crea la estructura física principal (matriz de estantes).</p>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full">Matriz Principal</span>
+                    </div>
+
+                    <form id="form-almacen" class="p-6 space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Nombre del Almacén</label>
+                                <input type="text" id="almacen-nombre" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Ej: Almacén Central - Callao">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Dirección exacta</label>
+                                <input type="text" id="almacen-direccion" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Av. Argentina 3020">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Cantidad de Filas</label>
+                                <input type="number" id="almacen-filas" required min="1" value="5" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="5">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Cantidad de Columnas</label>
+                                <input type="number" id="almacen-columnas" required min="1" value="10" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="10">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors shadow-sm">
+                            Guardar Almacén en Base de Datos
+                        </button>
+                    </form>
+                </div>
                     <p class="text-sm text-slate-500">Administre las ubicaciones del almacén y visualice las rutas optimizadas.</p>
                 </div>
 
@@ -83,6 +122,13 @@
 
                         <form id="form-ubicacion" class="p-6 space-y-5">
                             <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Almacén al que pertenece</label>
+                                <select id="ubicacion-almacen" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+                                    <option value="">Cargando almacenes...</option>
+                                </select>
+                            </div>
+
+                            <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Nombre/Código</label>
                                 <input type="text" id="ubicacion-nombre" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm" placeholder="A-01 o Estante Electrónica">
                             </div>
@@ -92,7 +138,7 @@
                                 <textarea id="ubicacion-descripcion" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm" rows="3" placeholder="Descripción de la ubicación..."></textarea>
                             </div>
 
-                            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
+                            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors shadow-sm">
                                 Crear Ubicación
                             </button>
                         </form>
