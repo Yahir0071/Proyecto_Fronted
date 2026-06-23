@@ -170,15 +170,23 @@ async function eliminarUbicacion(id) {
             method: 'DELETE'
         });
 
-        if (response.ok) {
-            mostrarToast('✅ Ubicación eliminada', 'success');
-            cargarUbicacionesModulo();
+        const data = await response.json();
+        console.log('Respuesta:', data);
+
+        if (data.exitoso) {
+            // ✅ Se eliminó correctamente
+            mostrarToast(data.mensaje, 'success');
+            setTimeout(() => {
+                cargarUbicacionesModulo(); // ✅ Recarga después de 1 segundo
+            }, 1000);
         } else {
-            mostrarToast('Error al eliminar ubicación', 'error');
+            // ❌ No se puede eliminar
+            mostrarToast(data.mensaje, 'error');
         }
+
     } catch (error) {
         console.error('Error:', error);
-        mostrarToast('Error de conexión', 'error');
+        mostrarToast('❌ Error de conexión', 'error');
     }
 }
 
