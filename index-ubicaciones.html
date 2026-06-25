@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/index-ubicaciones.css">
 </head>
+
 <body class="bg-slate-100 text-slate-900 font-sans antialiased min-h-screen flex">
     <!-- Sidebar -->
     <aside class="w-64 bg-slate-900 text-white flex flex-col fixed h-full shadow-xl z-10">
         <div class="p-5 border-b border-slate-800 flex items-center gap-3">
-            <div class="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center font-bold text-white text-lg shadow-md">
+            <div
+                class="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center font-bold text-white text-lg shadow-md">
                 A
             </div>
             <div>
@@ -19,23 +22,33 @@
                 <p class="text-[10px] text-slate-400 font-medium">Panel de Control v1.0</p>
             </div>
         </div>
-        
+
         <nav class="flex-1 p-4 space-y-1.5 text-sm">
-            <a href="index-productos.html" class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+            <a href="index-productos.html"
+                class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
                 Productos y Stock
             </a>
-            <a href="index-ubicaciones.html" class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors active">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4"></path>
+            <a href="index-ubicaciones.html"
+                class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors active">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4">
+                    </path>
                 </svg>
                 Ubicaciones / Estantes
             </a>
-            <a href="index-pedidos.html" class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            <a href="index-pedidos.html"
+                class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 Pedidos y Despachos
             </a>
@@ -59,8 +72,7 @@
                 <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
                 <span class="text-xs font-semibold text-slate-600 tracking-wide uppercase">Servidor API Online</span>
             </div>
-            <button onclick="logout()"
-                class="bg-red-600 text-white px-4 py-2 rounded-lg">
+            <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-lg">
                 Cerrar Sesión
             </button>
         </header>
@@ -71,45 +83,66 @@
                 <div class="mt-4">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Gestión de Ubicaciones y Estantes</h2>
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
-                    <div class="p-6 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold text-slate-800">1. Registrar Nuevo Almacén</h3>
-                            <p class="text-xs text-slate-500 mt-1">Crea la estructura física principal (matriz de estantes).</p>
+                        <div class="p-6 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-800">1. Registrar Nuevo Almacén</h3>
+                                <p class="text-xs text-slate-500 mt-1">Crea la estructura física principal (matriz de
+                                    estantes).</p>
+                            </div>
+                            <span
+                                class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full">Matriz
+                                Principal</span>
                         </div>
-                        <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full">Matriz Principal</span>
+
+                        <form id="form-almacen" class="p-6 space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label
+                                        class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Nombre
+                                        del Almacén</label>
+                                    <input type="text" id="almacen-nombre" required
+                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                        placeholder="Ej: Almacén Central - Callao">
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Dirección
+                                        exacta</label>
+                                    <input type="text" id="almacen-direccion" required
+                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                        placeholder="Av. Argentina 3020">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label
+                                        class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Cantidad
+                                        de Filas</label>
+                                    <input type="number" id="almacen-filas" required min="1" value="5"
+                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                        placeholder="5">
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Cantidad
+                                        de Columnas</label>
+                                    <input type="number" id="almacen-columnas" required min="1" value="10"
+                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                        placeholder="10">
+                                </div>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors shadow-sm">
+                                Guardar Almacén en Base de Datos
+                            </button>
+                        </form>
                     </div>
-
-                    <form id="form-almacen" class="p-6 space-y-5">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Nombre del Almacén</label>
-                                <input type="text" id="almacen-nombre" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Ej: Almacén Central - Callao">
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Dirección exacta</label>
-                                <input type="text" id="almacen-direccion" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Av. Argentina 3020">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Cantidad de Filas</label>
-                                <input type="number" id="almacen-filas" required min="1" value="5" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="5">
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Cantidad de Columnas</label>
-                                <input type="number" id="almacen-columnas" required min="1" value="10" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="10">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors shadow-sm">
-                            Guardar Almacén en Base de Datos
-                        </button>
-                    </form>
-                </div>
-                    <p class="text-sm text-slate-500">Administre las ubicaciones del almacén y visualice las rutas optimizadas.</p>
+                    <p class="text-sm text-slate-500">Administre las ubicaciones del almacén y visualice las rutas
+                        optimizadas.</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -117,28 +150,39 @@
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="p-6 border-b border-slate-200 bg-slate-50">
                             <h3 class="text-lg font-semibold text-slate-800">Crear Nueva Ubicación</h3>
-                            <p class="text-xs text-slate-500 mt-1">Registre una nueva ubicación o estante en el almacén.</p>
+                            <p class="text-xs text-slate-500 mt-1">Registre una nueva ubicación o estante en el almacén.
+                            </p>
                         </div>
 
                         <form id="form-ubicacion" class="p-6 space-y-5">
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Almacén al que pertenece</label>
-                                <select id="ubicacion-almacen" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+                                <label
+                                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Almacén
+                                    al que pertenece</label>
+                                <select id="ubicacion-almacen" required
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
                                     <option value="">Cargando almacenes...</option>
                                 </select>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Nombre/Código</label>
-                                <input type="text" id="ubicacion-nombre" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm" placeholder="A-01 o Estante Electrónica">
+                                <label
+                                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Nombre/Código</label>
+                                <input type="text" id="ubicacion-nombre" required
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                                    placeholder="A-01 o Estante Electrónica">
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Descripción</label>
-                                <textarea id="ubicacion-descripcion" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm" rows="3" placeholder="Descripción de la ubicación..."></textarea>
+                                <label
+                                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Descripción</label>
+                                <textarea id="ubicacion-descripcion"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                                    rows="3" placeholder="Descripción de la ubicación..."></textarea>
                             </div>
 
-                            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors shadow-sm">
+                            <button type="submit"
+                                class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors shadow-sm">
                                 Crear Ubicación
                             </button>
                         </form>
@@ -148,30 +192,42 @@
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="p-6 border-b border-slate-200 bg-slate-50">
                             <h3 class="text-lg font-semibold text-slate-800">Conectar Ubicaciones</h3>
-                            <p class="text-xs text-slate-500 mt-1">Establezca distancias entre ubicaciones para optimizar rutas.</p>
+                            <p class="text-xs text-slate-500 mt-1">Establezca distancias entre ubicaciones para
+                                optimizar rutas.</p>
                         </div>
 
                         <form id="form-conectar" class="p-6 space-y-5">
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Ubicación Origen</label>
-                                <select id="ubicacion-origen" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                                <label
+                                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Ubicación
+                                    Origen</label>
+                                <select id="ubicacion-origen" required
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
                                     <option value="">Seleccione origen...</option>
                                 </select>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Ubicación Destino</label>
-                                <select id="ubicacion-destino" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                                <label
+                                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Ubicación
+                                    Destino</label>
+                                <select id="ubicacion-destino" required
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
                                     <option value="">Seleccione destino...</option>
                                 </select>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Distancia (metros)</label>
-                                <input type="number" id="distancia" required step="0.1" min="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="50">
+                                <label
+                                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Distancia
+                                    (metros)</label>
+                                <input type="number" id="distancia" required step="0.1" min="0"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                                    placeholder="50">
                             </div>
 
-                            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
+                            <button type="submit"
+                                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
                                 Conectar Ubicaciones
                             </button>
                         </form>
@@ -195,7 +251,8 @@
                             </thead>
                             <tbody id="tabla-ubicaciones">
                                 <tr>
-                                    <td colspan="4" class="px-6 py-4 text-center text-slate-500">Cargando ubicaciones...</td>
+                                    <td colspan="4" class="px-6 py-4 text-center text-slate-500">Cargando ubicaciones...
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -206,27 +263,33 @@
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="p-6 border-b border-slate-200 bg-slate-50">
                         <h3 class="text-lg font-semibold text-slate-800">Calculador de Rutas Optimizadas</h3>
-                        <p class="text-xs text-slate-500 mt-1">Calcula la ruta más corta entre dos ubicaciones usando Dijkstra</p>
+                        <p class="text-xs text-slate-500 mt-1">Calcula la ruta más corta entre dos ubicaciones usando
+                            Dijkstra</p>
                     </div>
 
                     <div class="p-6 space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Origen</label>
-                                <select id="ruta-origen" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                                <label
+                                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Origen</label>
+                                <select id="ruta-origen"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
                                     <option value="">Seleccione...</option>
                                 </select>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Destino</label>
-                                <select id="ruta-destino" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                                <label
+                                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Destino</label>
+                                <select id="ruta-destino"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
                                     <option value="">Seleccione...</option>
                                 </select>
                             </div>
 
                             <div class="flex items-end">
-                                <button type="button" onclick="calcularRuta('dijkstra')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
+                                <button type="button" onclick="calcularRuta('dijkstra')"
+                                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
                                     Calcular Ruta (Dijkstra)
                                 </button>
                             </div>
@@ -244,4 +307,5 @@
 
     <script src="js/index-ubicaciones.js"></script>
 </body>
+
 </html>
