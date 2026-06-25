@@ -1,559 +1,942 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pedidos y Despachos - LMZ Almacenes</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/index-pedidos.css">
-</head>
-<body class="bg-slate-100 text-slate-900 font-sans antialiased min-h-screen flex">
-    <aside class="w-64 bg-slate-900 text-white flex flex-col fixed h-full shadow-xl z-10">
-        <div class="p-5 border-b border-slate-800 flex items-center gap-3">
-            <div class="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center font-bold text-white text-lg shadow-md">
-                A
-            </div>
-            <div>
-                <h1 class="font-bold text-sm tracking-wide">LMZ Almacenes</h1>
-                <p class="text-[10px] text-slate-400 font-medium">Panel de Control v1.0</p>
-            </div>
+    <link rel="stylesheet" href="css/index-pedidos.css" />
+  </head>
+  <body
+    class="bg-slate-100 text-slate-900 font-sans antialiased min-h-screen flex"
+  >
+    <aside
+      class="w-64 bg-slate-900 text-white flex flex-col fixed h-full shadow-xl z-10"
+    >
+      <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+        <div
+          class="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center font-bold text-white text-lg shadow-md"
+        >
+          A
         </div>
-        
-        <nav class="flex-1 p-4 space-y-1.5 text-sm">
-            <a href="index-productos.html" class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                </svg>
-                Productos y Stock
-            </a>
-            <a href="index-ubicaciones.html" class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4"></path>
-                </svg>
-                Ubicaciones / Estantes
-            </a>
-            <a href="index-pedidos.html" class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors active">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                Pedidos y Despachos
-            </a>
-        </nav>
+        <div>
+          <h1 class="font-bold text-sm tracking-wide">LMZ Almacenes</h1>
+          <p class="text-[10px] text-slate-400 font-medium">
+            Panel de Control v1.0
+          </p>
+        </div>
+      </div>
 
-        <div class="p-4 border-t border-slate-800 text-center text-xs text-slate-500 font-medium">
-            UTP / UNI - Grupo 02
-        </div>
+      <nav class="flex-1 p-4 space-y-1.5 text-sm">
+        <a
+          href="index-productos.html"
+          class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+            ></path>
+          </svg>
+          Productos y Stock
+        </a>
+        <a
+          href="index-ubicaciones.html"
+          class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4"
+            ></path>
+          </svg>
+          Ubicaciones / Estantes
+        </a>
+        <a
+          href="index-pedidos.html"
+          class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition-colors active"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          Pedidos y Despachos
+        </a>
+      </nav>
+
+      <div
+        class="p-4 border-t border-slate-800 text-center text-xs text-slate-500 font-medium"
+      >
+        UTP / UNI - Grupo 02
+      </div>
     </aside>
 
     <div class="flex-1 pl-64 flex flex-col min-h-screen">
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-0">
-            <div class="flex items-center gap-2 text-sm text-slate-500 font-medium">
-                <span>Módulos</span>
-                <span>/</span>
-                <span class="text-slate-800 font-semibold">Pedidos y Despachos</span>
+      <header
+        class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-0"
+      >
+        <div class="flex items-center gap-2 text-sm text-slate-500 font-medium">
+          <span>Módulos</span>
+          <span>/</span>
+          <span class="text-slate-800 font-semibold">Pedidos y Despachos</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div
+            class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"
+          ></div>
+          <span
+            class="text-xs font-semibold text-slate-600 tracking-wide uppercase"
+            >Servidor API Online</span
+          >
+        </div>
+        <button
+          onclick="logout()"
+          class="bg-red-600 text-white px-4 py-2 rounded-lg"
+        >
+          Cerrar Sesión
+        </button>
+      </header>
+
+      <main class="p-8 flex-1 overflow-y-auto">
+        <div class="max-w-6xl mx-auto space-y-6">
+          <div class="mt-4">
+            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">
+              Gestión de Pedidos y Despachos
+            </h2>
+            <p class="text-sm text-slate-500">
+              Administre el ciclo completo de pedidos desde su creación hasta el
+              despacho.
+            </p>
+          </div>
+
+          <!-- Fila superior: Registrar Tienda + Nuevo Pedido + Cola -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Registrar Nueva Tienda -->
+            <div
+              class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
+            >
+              <div class="p-6 border-b border-slate-200 bg-slate-50">
+                <h3 class="text-lg font-semibold text-slate-800">
+                  🏪 Registrar Tienda
+                </h3>
+                <p class="text-xs text-slate-500 mt-1">
+                  Alta de nuevo cliente/tienda.
+                </p>
+              </div>
+              <form id="form-tienda" class="p-6 space-y-4">
+                <div>
+                  <label
+                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1"
+                    >Nombre de Tienda</label
+                  >
+                  <input
+                    type="text"
+                    id="tienda-nombre"
+                    required
+                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                    placeholder="Tienda El Sol S.A.C."
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1"
+                    >RUC</label
+                  >
+                  <input
+                    type="text"
+                    id="tienda-ruc"
+                    maxlength="11"
+                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                    placeholder="20123456789"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1"
+                    >Teléfono</label
+                  >
+                  <input
+                    type="text"
+                    id="tienda-telefono"
+                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                    placeholder="01-234-5678"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1"
+                    >Dirección</label
+                  >
+                  <input
+                    type="text"
+                    id="tienda-direccion"
+                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                    placeholder="Av. Principal 123, Lima"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors"
+                >
+                  Registrar Tienda
+                </button>
+              </form>
             </div>
-            <div class="flex items-center gap-3">
-                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                <span class="text-xs font-semibold text-slate-600 tracking-wide uppercase">Servidor API Online</span>
+
+            <!-- Nuevo Pedido -->
+            <div
+              class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden lg:col-span-2"
+            >
+              <div class="p-6 border-b border-slate-200 bg-slate-50">
+                <h3 class="text-lg font-semibold text-slate-800">
+                  🛒 Nuevo Pedido
+                </h3>
+                <p class="text-xs text-slate-500 mt-1">
+                  Registre un nuevo pedido con sus productos.
+                </p>
+              </div>
+
+              <div class="p-6 space-y-5">
+                <!-- Cabecera del pedido -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1"
+                      >Tienda / Cliente</label
+                    >
+                    <select
+                      id="pedido-cliente"
+                      required
+                      class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                    >
+                      <option value="">Selecciona una tienda...</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1"
+                      >Prioridad</label
+                    >
+                    <select
+                      id="pedido-prioridad"
+                      class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                    >
+                      <option value="1">Baja (1)</option>
+                      <option value="2">Media (2)</option>
+                      <option value="3" selected>Alta (3)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Añadir productos al pedido -->
+                <div
+                  class="border border-slate-200 rounded-lg p-4 bg-slate-50 space-y-3"
+                >
+                  <p
+                    class="text-xs font-semibold uppercase tracking-wider text-slate-600"
+                  >
+                    Agregar Producto al Pedido
+                  </p>
+                  <div class="flex gap-3 items-end">
+                    <div class="flex-1">
+                      <label class="block text-xs text-slate-500 mb-1"
+                        >Producto</label
+                      >
+                      <select
+                        id="detalle-producto"
+                        class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-400 text-sm"
+                      >
+                        <option value="">Selecciona producto...</option>
+                      </select>
+                    </div>
+                    <div class="w-28">
+                      <label class="block text-xs text-slate-500 mb-1"
+                        >Cantidad</label
+                      >
+                      <input
+                        type="number"
+                        id="detalle-cantidad"
+                        min="1"
+                        value="1"
+                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 text-sm"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onclick="agregarDetalle()"
+                      class="bg-red-500 hover:bg-red-600 text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors whitespace-nowrap"
+                    >
+                      + Añadir
+                    </button>
+                  </div>
+
+                  <!-- Tabla temporal de detalles -->
+                  <div id="detalles-container" class="hidden">
+                    <table class="w-full text-sm mt-2">
+                      <thead>
+                        <tr class="border-b border-slate-200">
+                          <th
+                            class="text-left py-2 text-xs text-slate-500 font-semibold"
+                          >
+                            Producto
+                          </th>
+                          <th
+                            class="text-center py-2 text-xs text-slate-500 font-semibold"
+                          >
+                            Cant.
+                          </th>
+                          <th
+                            class="text-right py-2 text-xs text-slate-500 font-semibold"
+                          >
+                            Precio Unit.
+                          </th>
+                          <th
+                            class="text-right py-2 text-xs text-slate-500 font-semibold"
+                          >
+                            Subtotal
+                          </th>
+                          <th class="py-2"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="tabla-detalles"></tbody>
+                      <tfoot>
+                        <tr class="border-t-2 border-slate-300">
+                          <td
+                            colspan="3"
+                            class="pt-3 text-right text-sm font-semibold text-slate-700"
+                          >
+                            Total Final:
+                          </td>
+                          <td
+                            class="pt-3 text-right font-bold text-slate-900"
+                            id="total-pedido"
+                          >
+                            S/. 0.00
+                          </td>
+                          <td></td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Botón crear pedido -->
+                <button
+                  type="button"
+                  onclick="crearPedido()"
+                  class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors"
+                >
+                  Confirmar y Crear Pedido
+                </button>
+              </div>
             </div>
-            <button onclick="logout()"
-                class="bg-red-600 text-white px-4 py-2 rounded-lg">
-                Cerrar Sesión
-            </button>
-        </header>
+          </div>
 
-        <main class="p-8 flex-1 overflow-y-auto">
-            <div class="max-w-6xl mx-auto space-y-6">
-                <div class="mt-4">
-                    <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Gestión de Pedidos y Despachos</h2>
-                    <p class="text-sm text-slate-500">Administre el ciclo completo de pedidos desde su creación hasta el despacho.</p>
+          <!-- Fila: Cambiar Estado + Cola -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Cambiar Estado -->
+            <div
+              class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
+            >
+              <div class="p-6 border-b border-slate-200 bg-slate-50">
+                <h3 class="text-lg font-semibold text-slate-800">
+                  Cambiar Estado
+                </h3>
+                <p class="text-xs text-slate-500 mt-1">
+                  Actualice el estado de un pedido.
+                </p>
+              </div>
+              <form id="form-estado" class="p-6 space-y-5">
+                <div>
+                  <label
+                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1"
+                    >Seleccionar Pedido</label
+                  >
+                  <select
+                    id="estado-pedido"
+                    required
+                    class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  >
+                    <option value="">Cargando pedidos...</option>
+                  </select>
                 </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="p-6 border-b border-slate-200 bg-slate-50">
-                            <h3 class="text-lg font-semibold text-slate-800">Nuevo Pedido</h3>
-                            <p class="text-xs text-slate-500 mt-1">Registre un nuevo pedido de cliente.</p>
-                        </div>
-
-                        <form id="form-pedido" class="p-6 space-y-5">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Cliente</label>
-                                <select id="pedido-cliente" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-500 text-sm">
-                                    <option value="">Cargando clientes...</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Prioridad</label>
-                                <select id="pedido-prioridad" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-500 text-sm">
-                                    <option value="1">Baja (1)</option>
-                                    <option value="2">Media (2)</option>
-                                    <option value="3" selected>Alta (3)</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Monto Total (S/.)</label>
-                                <input type="number" id="pedido-total" step="0.01" min="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm" placeholder="0.00">
-                            </div>
-
-                            <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
-                                Crear Pedido
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="p-6 border-b border-slate-200 bg-slate-50">
-                            <h3 class="text-lg font-semibold text-slate-800">Cambiar Estado</h3>
-                            <p class="text-xs text-slate-500 mt-1">Actualice el estado de un pedido.</p>
-                        </div>
-
-                        <form id="form-estado" class="p-6 space-y-5">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Seleccionar Pedido</label>
-                                <select id="estado-pedido" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                                    <option value="">Cargando pedidos...</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Nuevo Estado</label>
-                                <select id="nuevo-estado" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                                    <option value="">Seleccione estado...</option>
-                                    <option value="PENDIENTE">Pendiente</option>
-                                    <option value="EN_PREPARACION">En Preparación</option>
-                                    <option value="ENVIADO">Enviado</option>
-                                    <option value="ENTREGADO">Entregado</option>
-                                </select>
-                            </div>
-
-                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
-                                Actualizar Estado
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="p-6 border-b border-slate-200 bg-slate-50">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h3 class="text-lg font-semibold text-slate-800">Cola de Despacho</h3>
-                                    <p class="text-xs text-slate-500 mt-1">Gestione la cola de pedidos (FIFO).</p>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs font-semibold text-slate-600 uppercase">Estado:</span>
-                                    <div id="indicador-cola" class="w-4 h-4 rounded-full bg-green-500 animate-pulse"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-6 space-y-4">
-                            <!-- Contador principal -->
-                            <div id="cola-estado" class="bg-gradient-to-r from-amber-50 to-amber-100 border-2 border-amber-200 rounded-lg p-6">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-xs text-amber-700 font-semibold uppercase mb-1">📋 Pedidos en Cola:</p>
-                                        <p id="tamanio-cola" class="text-4xl font-bold text-amber-700">0</p>
-                                    </div>
-                                    <div class="text-5xl">📦</div>
-                                </div>
-                            </div>
-
-                            <!-- Lista visual de la cola -->
-                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-600 mb-3">Próximos a procesar:</p>
-                                <div id="lista-cola" class="space-y-2">
-                                    <p class="text-sm text-slate-500 text-center py-4">Cola vacía</p>
-                                </div>
-                            </div>
-
-                            <!-- Botón procesar -->
-                            <button type="button" id="btn-procesar" onclick="procesarSiguiente()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-slate-400 disabled:to-slate-400 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg text-sm transition-all transform hover:scale-105 flex items-center justify-center gap-2" disabled>
-                                <span>⚡</span>
-                                <span>Procesar Siguiente</span>
-                                <span>→</span>
-                            </button>
-
-                            <!-- Info del siguiente -->
-                            <div id="info-siguiente" class="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg p-4 hidden">
-                                <p class="text-xs text-green-700 font-semibold mb-2">✅ Actualmente en proceso:</p>
-                                <p id="siguiente-numero" class="text-lg font-bold text-green-800">Pedido #-</p>
-                                <p id="siguiente-estado" class="text-sm text-green-700 mt-1">Estado: -</p>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                  <label
+                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1"
+                    >Nuevo Estado</label
+                  >
+                  <select
+                    id="nuevo-estado"
+                    required
+                    class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  >
+                    <option value="">Seleccione estado...</option>
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="EN_PREPARACION">En Preparación</option>
+                    <option value="ENVIADO">Enviado</option>
+                    <option value="ENTREGADO">Entregado</option>
+                  </select>
                 </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="p-6 border-b border-slate-200 bg-slate-50">
-                        <h3 class="text-lg font-semibold text-slate-800">Listado de Pedidos</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead class="bg-slate-50 border-b border-slate-200">
-                                <tr>
-                                    <th class="px-6 py-3 text-left font-semibold text-slate-600">#</th>
-                                    <th class="px-6 py-3 text-left font-semibold text-slate-600">Cliente</th>
-                                    <th class="px-6 py-3 text-center font-semibold text-slate-600">Estado</th>
-                                    <th class="px-6 py-3 text-right font-semibold text-slate-600">Total</th>
-                                    <th class="px-6 py-3 text-center font-semibold text-slate-600">Prioridad</th>
-                                    <th class="px-6 py-3 text-center font-semibold text-slate-600">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabla-pedidos">
-                                <tr>
-                                    <td colspan="6" class="px-6 py-4 text-center text-slate-500">Cargando pedidos...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="p-6 border-b border-slate-200 bg-slate-50">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-lg font-semibold text-slate-800">Historial de Cambios de Estado</h3>
-                                <p class="text-xs text-slate-500 mt-1">Visualice y deshaga cambios de estado (Pila/Stack)</p>
-                            </div>
-                            <div class="bg-indigo-100 text-indigo-800 rounded-lg px-4 py-2 text-center">
-                                <p class="text-xs font-semibold">PILA</p>
-                                <p id="contador-pila" class="text-2xl font-bold">0</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-6 space-y-5">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Seleccionar Pedido</label>
-                                <select id="historial-pedido" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-                                    <option value="">Cargando pedidos...</option>
-                                </select>
-                            </div>
-
-                            <div class="flex items-end gap-2">
-                                <button type="button" id="btn-deshacer" onclick="mostrarModalDeshacer()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors flex items-center justify-center gap-2" disabled>
-                                    <span>↩️</span>
-                                    <span>Deshacer Último Cambio</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Panel visual de la pila -->
-                        <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 rounded-lg p-4">
-                            <p class="text-xs font-semibold uppercase tracking-wider text-indigo-800 mb-3">📚 Contenido de la Pila (LIFO)</p>
-                            <div id="pila-visual" class="space-y-2 max-h-48 overflow-y-auto">
-                                <p class="text-sm text-indigo-600">Seleccione un pedido para ver los cambios pendientes de deshacer</p>
-                            </div>
-                        </div>
-
-                        <div id="historial-contenido" class="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                            <p class="text-sm text-slate-600">Seleccione un pedido para ver su historial</p>
-                        </div>
-                    </div>
-                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors"
+                >
+                  Actualizar Estado
+                </button>
+              </form>
             </div>
-        </main>
+
+            <!-- Cola de Pedidos -->
+            <div
+              class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
+            >
+              <div class="p-6 border-b border-slate-200 bg-slate-50">
+                <h3 class="text-lg font-semibold text-slate-800">
+                  Cola de Despacho
+                </h3>
+                <p class="text-xs text-slate-500 mt-1">
+                  Gestione la cola de pedidos.
+                </p>
+              </div>
+              <div class="p-6 space-y-4">
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                  <p class="text-xs text-amber-600 font-semibold mb-2">
+                    Pedidos en Cola:
+                  </p>
+                  <p
+                    id="tamanio-cola"
+                    class="text-3xl font-bold text-amber-700"
+                  >
+                    0
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onclick="procesarSiguiente()"
+                  class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors"
+                >
+                  Procesar Siguiente
+                </button>
+                <div
+                  id="info-siguiente"
+                  class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm hidden"
+                >
+                  <p class="text-slate-600 mb-2">Próximo a procesar:</p>
+                  <p id="siguiente-numero" class="font-bold text-slate-800">
+                    Pedido #-
+                  </p>
+                  <p id="siguiente-estado" class="text-slate-600 text-xs mt-1">
+                    Estado: -
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabla de Pedidos -->
+          <div
+            class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
+          >
+            <div class="p-6 border-b border-slate-200 bg-slate-50">
+              <h3 class="text-lg font-semibold text-slate-800">
+                Listado de Pedidos
+              </h3>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-left font-semibold text-slate-600"
+                    >
+                      #
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left font-semibold text-slate-600"
+                    >
+                      Tienda
+                    </th>
+                    <th
+                      class="px-6 py-3 text-center font-semibold text-slate-600"
+                    >
+                      Estado
+                    </th>
+                    <th
+                      class="px-6 py-3 text-right font-semibold text-slate-600"
+                    >
+                      Total
+                    </th>
+                    <th
+                      class="px-6 py-3 text-center font-semibold text-slate-600"
+                    >
+                      Prioridad
+                    </th>
+                    <th
+                      class="px-6 py-3 text-center font-semibold text-slate-600"
+                    >
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="tabla-pedidos">
+                  <tr>
+                    <td
+                      colspan="6"
+                      class="px-6 py-4 text-center text-slate-500"
+                    >
+                      Cargando pedidos...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Historial de Cambios -->
+          <div
+            class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
+          >
+            <div class="p-6 border-b border-slate-200 bg-slate-50">
+              <h3 class="text-lg font-semibold text-slate-800">
+                Historial de Cambios de Estado
+              </h3>
+              <p class="text-xs text-slate-500 mt-1">
+                Visualice y deshaga cambios de estado (Pila/Stack)
+              </p>
+            </div>
+            <div class="p-6 space-y-5">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label
+                    class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1"
+                    >Seleccionar Pedido</label
+                  >
+                  <select
+                    id="historial-pedido"
+                    class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                  >
+                    <option value="">Cargando pedidos...</option>
+                  </select>
+                </div>
+                <div class="flex items-end">
+                  <button
+                    type="button"
+                    onclick="deshacerEstado()"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors"
+                  >
+                    ↩️ Deshacer Último Cambio
+                  </button>
+                </div>
+              </div>
+              <div
+                id="historial-contenido"
+                class="bg-slate-50 border border-slate-200 rounded-lg p-4"
+              >
+                <p class="text-sm text-slate-600">
+                  Seleccione un pedido para ver su historial
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <script src="js/index-pedidos.js"></script>
 
     <!-- MODAL PARA CONFIRMAR DESHACER -->
-    <div id="modal-deshacer" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center" onclick="cerrarModalDeshacer(event)">
-        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 transform transition-all" onclick="event.stopPropagation()">
-            <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 p-6 rounded-t-xl">
-                <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                    <span>↩️</span>
-                    <span>Confirmar Deshacer</span>
-                </h2>
-            </div>
-
-            <div class="p-6 space-y-4">
-                <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                    <p class="text-sm text-indigo-900 font-medium mb-2">Cambio a revertir:</p>
-                    <div class="space-y-1">
-                        <p id="modal-cambio-de" class="text-sm text-slate-700">De: <span class="font-bold text-indigo-600">-</span></p>
-                        <p id="modal-cambio-a" class="text-sm text-slate-700">A: <span class="font-bold text-indigo-600">-</span></p>
-                        <p id="modal-cambio-fecha" class="text-xs text-slate-500 mt-2">Fecha: -</p>
-                    </div>
-                </div>
-
-                <p class="text-sm text-slate-600">¿Está seguro que desea deshacer este cambio? Esta acción se puede volver a deshacer.</p>
-            </div>
-
-            <div class="p-6 border-t border-slate-200 flex gap-3">
-                <button onclick="cerrarModalDeshacer()" class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors">
-                    Cancelar
-                </button>
-                <button onclick="confirmarDeshacer()" class="flex-1 px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors">
-                    Deshacer
-                </button>
-            </div>
+    <div
+      id="modal-deshacer"
+      class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center"
+      onclick="cerrarModalDeshacer(event)"
+    >
+      <div
+        class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 transform transition-all"
+        onclick="event.stopPropagation()"
+      >
+        <div
+          class="bg-gradient-to-r from-indigo-600 to-indigo-700 p-6 rounded-t-xl"
+        >
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span>↩️</span>
+            <span>Confirmar Deshacer</span>
+          </h2>
         </div>
+
+        <div class="p-6 space-y-4">
+          <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+            <p class="text-sm text-indigo-900 font-medium mb-2">
+              Cambio a revertir:
+            </p>
+            <div class="space-y-1">
+              <p id="modal-cambio-de" class="text-sm text-slate-700">
+                De: <span class="font-bold text-indigo-600">-</span>
+              </p>
+              <p id="modal-cambio-a" class="text-sm text-slate-700">
+                A: <span class="font-bold text-indigo-600">-</span>
+              </p>
+              <p id="modal-cambio-fecha" class="text-xs text-slate-500 mt-2">
+                Fecha: -
+              </p>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-600">
+            ¿Está seguro que desea deshacer este cambio? Esta acción se puede
+            volver a deshacer.
+          </p>
+        </div>
+
+        <div class="p-6 border-t border-slate-200 flex gap-3">
+          <button
+            onclick="cerrarModalDeshacer()"
+            class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button
+            onclick="confirmarDeshacer()"
+            class="flex-1 px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+          >
+            Deshacer
+          </button>
+        </div>
+      </div>
     </div>
-    
+
     <script>
-        // Estructuras de Datos
-        const colaDespacho = []; // FIFO (First In, First Out)
-        const pilasHistorial = {}; // LIFO (Last In, First Out) agrupadas por ID de pedido
+      // Estructuras de Datos
+      const colaDespacho = []; // FIFO (First In, First Out)
+      const pilasHistorial = {}; // LIFO (Last In, First Out) agrupadas por ID de pedido
 
-        // Evento simulado para actualizar la UI cuando index-pedidos.js añada pedidos
-        document.addEventListener("DOMContentLoaded", () => {
-            // Escuchar el cambio en el selector de historial para renderizar la pila del pedido
-            const selectHistorial = document.getElementById("historial-pedido");
-            if (selectHistorial) {
-                selectHistorial.addEventListener("change", (e) => {
-                    renderizarPila(e.target.value);
-                });
-            }
-        });
+      // Evento simulado para actualizar la UI cuando index-pedidos.js añada pedidos
+      document.addEventListener("DOMContentLoaded", () => {
+        // Escuchar el cambio en el selector de historial para renderizar la pila del pedido
+        const selectHistorial = document.getElementById("historial-pedido");
+        if (selectHistorial) {
+          selectHistorial.addEventListener("change", (e) => {
+            renderizarPila(e.target.value);
+          });
+        }
+      });
 
-        // Función para agregar un pedido a la Cola de Despacho
-        function encolarPedido(pedido) {
-            colaDespacho.push(pedido);
-            actualizarUICola();
+      // Función para agregar un pedido a la Cola de Despacho
+      function encolarPedido(pedido) {
+        colaDespacho.push(pedido);
+        actualizarUICola();
+      }
+
+      // Procesar Siguiente en la Cola (FIFO)
+      function procesarSiguiente() {
+        if (colaDespacho.length === 0) {
+          if (typeof mostrarToast !== "undefined") {
+            mostrarToast("⚠️ No hay pedidos en la cola de despacho", "warning");
+          } else {
+            alert("No hay pedidos en la cola de despacho.");
+          }
+          return;
         }
 
-        // Procesar Siguiente en la Cola (FIFO)
-        function procesarSiguiente() {
-            if (colaDespacho.length === 0) {
-                if (typeof mostrarToast !== 'undefined') {
-                    mostrarToast('⚠️ No hay pedidos en la cola de despacho', 'warning');
-                } else {
-                    alert("No hay pedidos en la cola de despacho.");
-                }
-                return;
-            }
+        // Obtener el primero (FIFO)
+        const pedidoProcesado = colaDespacho.shift();
 
-            // Obtener el primero (FIFO)
-            const pedidoProcesado = colaDespacho.shift();
-            
-            // Animación del botón
-            const btn = document.getElementById("btn-procesar");
-            btn.style.transform = "scale(0.95)";
-            setTimeout(() => {
-                btn.style.transform = "scale(1)";
-            }, 100);
+        // Animación del botón
+        const btn = document.getElementById("btn-procesar");
+        btn.style.transform = "scale(0.95)";
+        setTimeout(() => {
+          btn.style.transform = "scale(1)";
+        }, 100);
 
-            // Toast de éxito
-            if (typeof mostrarToast !== 'undefined') {
-                mostrarToast(`✅ Procesando Pedido #${pedidoProcesado.id} - Cliente: ${pedidoProcesado.cliente}`, 'success');
-            } else {
-                alert(`Procesando pedido #${pedidoProcesado.id} del cliente ${pedidoProcesado.cliente}`);
-            }
-
-            console.log(`✅ Pedido #${pedidoProcesado.id} procesado. Cola: ${colaDespacho.length} elementos`);
-            actualizarUICola();
+        // Toast de éxito
+        if (typeof mostrarToast !== "undefined") {
+          mostrarToast(
+            `✅ Procesando Pedido #${pedidoProcesado.id} - Cliente: ${pedidoProcesado.cliente}`,
+            "success",
+          );
+        } else {
+          alert(
+            `Procesando pedido #${pedidoProcesado.id} del cliente ${pedidoProcesado.cliente}`,
+          );
         }
 
-        function actualizarUICola() {
-            const tamanio = colaDespacho.length;
-            document.getElementById("tamanio-cola").innerText = tamanio;
-            
-            // Actualizar indicador de estado (verde/amarillo/rojo)
-            const indicador = document.getElementById("indicador-cola");
-            if (tamanio <= 0) {
-                indicador.className = "w-4 h-4 rounded-full bg-green-500";
-            } else if (tamanio <= 5) {
-                indicador.className = "w-4 h-4 rounded-full bg-yellow-500 animate-pulse";
-            } else if (tamanio <= 10) {
-                indicador.className = "w-4 h-4 rounded-full bg-orange-500 animate-pulse";
-            } else {
-                indicador.className = "w-4 h-4 rounded-full bg-red-500 animate-bounce";
-            }
+        console.log(
+          `✅ Pedido #${pedidoProcesado.id} procesado. Cola: ${colaDespacho.length} elementos`,
+        );
+        actualizarUICola();
+      }
 
-            // Renderizar lista de cola (máximo 4 elementos)
-            const listaHtml = document.getElementById("lista-cola");
-            if (colaDespacho.length === 0) {
-                listaHtml.innerHTML = '<p class="text-sm text-slate-500 text-center py-4">✓ Cola vacía</p>';
-                document.getElementById("btn-procesar").disabled = true;
-                document.getElementById("info-siguiente").classList.add("hidden");
-            } else {
-                let html = '';
-                for (let i = 0; i < Math.min(colaDespacho.length, 4); i++) {
-                    const pedido = colaDespacho[i];
-                    const esUltimo = i === colaDespacho.length - 1;
-                    const esPrimero = i === 0;
-                    html += `
-                        <div class="bg-white border-l-4 ${esPrimero ? 'border-green-500 ring-2 ring-green-200' : 'border-slate-300'} rounded p-3 transform transition-all ${esPrimero ? 'scale-105' : ''}">
+      function actualizarUICola() {
+        const tamanio = colaDespacho.length;
+        document.getElementById("tamanio-cola").innerText = tamanio;
+
+        // Actualizar indicador de estado (verde/amarillo/rojo)
+        const indicador = document.getElementById("indicador-cola");
+        if (tamanio <= 0) {
+          indicador.className = "w-4 h-4 rounded-full bg-green-500";
+        } else if (tamanio <= 5) {
+          indicador.className =
+            "w-4 h-4 rounded-full bg-yellow-500 animate-pulse";
+        } else if (tamanio <= 10) {
+          indicador.className =
+            "w-4 h-4 rounded-full bg-orange-500 animate-pulse";
+        } else {
+          indicador.className =
+            "w-4 h-4 rounded-full bg-red-500 animate-bounce";
+        }
+
+        // Renderizar lista de cola (máximo 4 elementos)
+        const listaHtml = document.getElementById("lista-cola");
+        if (colaDespacho.length === 0) {
+          listaHtml.innerHTML =
+            '<p class="text-sm text-slate-500 text-center py-4">✓ Cola vacía</p>';
+          document.getElementById("btn-procesar").disabled = true;
+          document.getElementById("info-siguiente").classList.add("hidden");
+        } else {
+          let html = "";
+          for (let i = 0; i < Math.min(colaDespacho.length, 4); i++) {
+            const pedido = colaDespacho[i];
+            const esUltimo = i === colaDespacho.length - 1;
+            const esPrimero = i === 0;
+            html += `
+                        <div class="bg-white border-l-4 ${esPrimero ? "border-green-500 ring-2 ring-green-200" : "border-slate-300"} rounded p-3 transform transition-all ${esPrimero ? "scale-105" : ""}">
                             <div class="flex items-center justify-between">
                                 <div class="text-xs">
-                                    <p class="font-semibold text-slate-800">${esPrimero ? '🚀 Siguiente' : i === 1 ? '⏳ Esperando' : '⋯ En cola'}</p>
+                                    <p class="font-semibold text-slate-800">${esPrimero ? "🚀 Siguiente" : i === 1 ? "⏳ Esperando" : "⋯ En cola"}</p>
                                     <p class="text-slate-600 font-bold">Pedido #${pedido.id}</p>
-                                    <p class="text-slate-500 text-[10px]">Cliente: ${pedido.cliente || 'N/A'}</p>
+                                    <p class="text-slate-500 text-[10px]">Cliente: ${pedido.cliente || "N/A"}</p>
                                 </div>
-                                <span class="text-2xl">${esPrimero ? '▶️' : i === 1 ? '⏸️' : '📋'}</span>
+                                <span class="text-2xl">${esPrimero ? "▶️" : i === 1 ? "⏸️" : "📋"}</span>
                             </div>
                         </div>`;
-                }
-                if (colaDespacho.length > 4) {
-                    html += `<p class="text-xs text-center text-slate-500 py-2">... y ${colaDespacho.length - 4} más en cola</p>`;
-                }
-                listaHtml.innerHTML = html;
-                document.getElementById("btn-procesar").disabled = false;
-            }
-
-            // Actualizar info del siguiente
-            const infoSiguiente = document.getElementById("info-siguiente");
-            if (colaDespacho.length > 0) {
-                infoSiguiente.classList.remove("hidden");
-                document.getElementById("siguiente-numero").innerText = `Pedido #${colaDespacho[0].id}`;
-                document.getElementById("siguiente-estado").innerText = `Estado: ${colaDespacho[0].estado || 'PENDIENTE'}`;
-            } else {
-                infoSiguiente.classList.add("hidden");
-            }
+          }
+          if (colaDespacho.length > 4) {
+            html += `<p class="text-xs text-center text-slate-500 py-2">... y ${colaDespacho.length - 4} más en cola</p>`;
+          }
+          listaHtml.innerHTML = html;
+          document.getElementById("btn-procesar").disabled = false;
         }
 
-        // Registrar un cambio en la Pila (LIFO) de un pedido
-        function registrarCambioEstado(pedidoId, estadoAnterior, nuevoEstado) {
-            if (!pilasHistorial[pedidoId]) {
-                pilasHistorial[pedidoId] = [];
-            }
-            // Hacemos push al historial del pedido
-            pilasHistorial[pedidoId].push({
-                estadoAnterior: estadoAnterior,
-                nuevoEstado: nuevoEstado,
-                fecha: new Date().toLocaleTimeString()
-            });
-            renderizarPila(pedidoId);
-            actualizarContadorPila();
+        // Actualizar info del siguiente
+        const infoSiguiente = document.getElementById("info-siguiente");
+        if (colaDespacho.length > 0) {
+          infoSiguiente.classList.remove("hidden");
+          document.getElementById("siguiente-numero").innerText =
+            `Pedido #${colaDespacho[0].id}`;
+          document.getElementById("siguiente-estado").innerText =
+            `Estado: ${colaDespacho[0].estado || "PENDIENTE"}`;
+        } else {
+          infoSiguiente.classList.add("hidden");
+        }
+      }
+
+      // Registrar un cambio en la Pila (LIFO) de un pedido
+      function registrarCambioEstado(pedidoId, estadoAnterior, nuevoEstado) {
+        if (!pilasHistorial[pedidoId]) {
+          pilasHistorial[pedidoId] = [];
+        }
+        // Hacemos push al historial del pedido
+        pilasHistorial[pedidoId].push({
+          estadoAnterior: estadoAnterior,
+          nuevoEstado: nuevoEstado,
+          fecha: new Date().toLocaleTimeString(),
+        });
+        renderizarPila(pedidoId);
+        actualizarContadorPila();
+      }
+
+      // Mostrar modal para confirmar deshacer
+      function mostrarModalDeshacer() {
+        const pedidoId = document.getElementById("historial-pedido").value;
+        if (
+          !pedidoId ||
+          !pilasHistorial[pedidoId] ||
+          pilasHistorial[pedidoId].length === 0
+        ) {
+          alert("No hay cambios para deshacer en este pedido.");
+          return;
         }
 
-        // Mostrar modal para confirmar deshacer
-        function mostrarModalDeshacer() {
-            const pedidoId = document.getElementById("historial-pedido").value;
-            if (!pedidoId || !pilasHistorial[pedidoId] || pilasHistorial[pedidoId].length === 0) {
-                alert("No hay cambios para deshacer en este pedido.");
-                return;
-            }
+        const ultimoCambio =
+          pilasHistorial[pedidoId][pilasHistorial[pedidoId].length - 1];
+        document
+          .getElementById("modal-cambio-de")
+          .querySelector("span").textContent = ultimoCambio.estadoAnterior;
+        document
+          .getElementById("modal-cambio-a")
+          .querySelector("span").textContent = ultimoCambio.nuevoEstado;
+        document.getElementById("modal-cambio-fecha").textContent =
+          "Fecha: " + ultimoCambio.fecha;
 
-            const ultimoCambio = pilasHistorial[pedidoId][pilasHistorial[pedidoId].length - 1];
-            document.getElementById("modal-cambio-de").querySelector("span").textContent = ultimoCambio.estadoAnterior;
-            document.getElementById("modal-cambio-a").querySelector("span").textContent = ultimoCambio.nuevoEstado;
-            document.getElementById("modal-cambio-fecha").textContent = "Fecha: " + ultimoCambio.fecha;
+        document.getElementById("modal-deshacer").classList.remove("hidden");
+      }
 
-            document.getElementById("modal-deshacer").classList.remove("hidden");
+      // Cerrar modal
+      function cerrarModalDeshacer(event) {
+        if (event && event.target !== document.getElementById("modal-deshacer"))
+          return;
+        document.getElementById("modal-deshacer").classList.add("hidden");
+      }
+
+      // Confirmar y ejecutar deshacer
+      function confirmarDeshacer() {
+        const pedidoId = document.getElementById("historial-pedido").value;
+        if (
+          !pedidoId ||
+          !pilasHistorial[pedidoId] ||
+          pilasHistorial[pedidoId].length === 0
+        ) {
+          alert("No hay cambios para deshacer en este pedido.");
+          return;
         }
 
-        // Cerrar modal
-        function cerrarModalDeshacer(event) {
-            if (event && event.target !== document.getElementById("modal-deshacer")) return;
-            document.getElementById("modal-deshacer").classList.add("hidden");
+        const ultimoCambio = pilasHistorial[pedidoId].pop(); // Saca el último (LIFO)
+        console.log(
+          `↩️ Deshaciendo cambio: Volviendo de ${ultimoCambio.nuevoEstado} a ${ultimoCambio.estadoAnterior}`,
+        );
+
+        cerrarModalDeshacer();
+        renderizarPila(pedidoId);
+        actualizarContadorPila();
+
+        // Mostrar notificación de éxito
+        if (typeof mostrarToast !== "undefined") {
+          mostrarToast(
+            `↩️ Cambio deshecho: ${ultimoCambio.estadoAnterior}`,
+            "success",
+          );
+        }
+      }
+
+      // Deshacer el último cambio usando la Pila (LIFO)
+      function deshacerEstado() {
+        const pedidoId = document.getElementById("historial-pedido").value;
+        if (
+          !pedidoId ||
+          !pilasHistorial[pedidoId] ||
+          pilasHistorial[pedidoId].length === 0
+        ) {
+          alert("No hay cambios para deshacer en este pedido.");
+          return;
         }
 
-        // Confirmar y ejecutar deshacer
-        function confirmarDeshacer() {
-            const pedidoId = document.getElementById("historial-pedido").value;
-            if (!pedidoId || !pilasHistorial[pedidoId] || pilasHistorial[pedidoId].length === 0) {
-                alert("No hay cambios para deshacer en este pedido.");
-                return;
-            }
+        const ultimoCambio = pilasHistorial[pedidoId].pop(); // Saca el último (LIFO)
+        alert(
+          `Deshaciendo cambio: Volviendo de ${ultimoCambio.nuevoEstado} a ${ultimoCambio.estadoAnterior}`,
+        );
 
-            const ultimoCambio = pilasHistorial[pedidoId].pop(); // Saca el último (LIFO)
-            console.log(`↩️ Deshaciendo cambio: Volviendo de ${ultimoCambio.nuevoEstado} a ${ultimoCambio.estadoAnterior}`);
-            
-            cerrarModalDeshacer();
-            renderizarPila(pedidoId);
-            actualizarContadorPila();
-            
-            // Mostrar notificación de éxito
-            if (typeof mostrarToast !== 'undefined') {
-                mostrarToast(`↩️ Cambio deshecho: ${ultimoCambio.estadoAnterior}`, 'success');
-            }
+        // Aquí puedes llamar a una función de tu index-pedidos.js para actualizar la API si fuese necesario
+        // ejemplo: actualizarEstadoEnServidor(pedidoId, ultimoCambio.estadoAnterior);
+
+        renderizarPila(pedidoId);
+      }
+
+      // Actualizar contador de pila
+      function actualizarContadorPila() {
+        let totalElementos = 0;
+        for (let pedidoId in pilasHistorial) {
+          totalElementos += pilasHistorial[pedidoId].length;
+        }
+        document.getElementById("contador-pila").textContent = totalElementos;
+
+        // Actualizar estado del botón
+        const pedidoId = document.getElementById("historial-pedido").value;
+        const btnDeshacer = document.getElementById("btn-deshacer");
+        if (
+          pedidoId &&
+          pilasHistorial[pedidoId] &&
+          pilasHistorial[pedidoId].length > 0
+        ) {
+          btnDeshacer.disabled = false;
+        } else {
+          btnDeshacer.disabled = true;
+        }
+      }
+
+      function renderizarPila(pedidoId) {
+        const contenedor = document.getElementById("historial-contenido");
+        const pilaVisual = document.getElementById("pila-visual");
+
+        if (!pedidoId) {
+          contenedor.innerHTML =
+            '<p class="text-sm text-slate-600">Seleccione un pedido para ver su historial</p>';
+          pilaVisual.innerHTML =
+            '<p class="text-sm text-indigo-600">Seleccione un pedido para ver los cambios pendientes de deshacer</p>';
+          document.getElementById("btn-deshacer").disabled = true;
+          return;
         }
 
-        // Deshacer el último cambio usando la Pila (LIFO)
-        function deshacerEstado() {
-            const pedidoId = document.getElementById("historial-pedido").value;
-            if (!pedidoId || !pilasHistorial[pedidoId] || pilasHistorial[pedidoId].length === 0) {
-                alert("No hay cambios para deshacer en este pedido.");
-                return;
-            }
-
-            const ultimoCambio = pilasHistorial[pedidoId].pop(); // Saca el último (LIFO)
-            alert(`Deshaciendo cambio: Volviendo de ${ultimoCambio.nuevoEstado} a ${ultimoCambio.estadoAnterior}`);
-            
-            // Aquí puedes llamar a una función de tu index-pedidos.js para actualizar la API si fuese necesario
-            // ejemplo: actualizarEstadoEnServidor(pedidoId, ultimoCambio.estadoAnterior);
-
-            renderizarPila(pedidoId);
+        const pila = pilasHistorial[pedidoId] || [];
+        if (pila.length === 0) {
+          contenedor.innerHTML =
+            '<p class="text-sm text-amber-600 font-medium">Sin historial de cambios registrados en esta sesión.</p>';
+          pilaVisual.innerHTML =
+            '<p class="text-sm text-indigo-600 font-medium">✓ Pila vacía - No hay cambios para deshacer</p>';
+          document.getElementById("btn-deshacer").disabled = true;
+          return;
         }
 
-        // Actualizar contador de pila
-        function actualizarContadorPila() {
-            let totalElementos = 0;
-            for (let pedidoId in pilasHistorial) {
-                totalElementos += pilasHistorial[pedidoId].length;
-            }
-            document.getElementById("contador-pila").textContent = totalElementos;
-            
-            // Actualizar estado del botón
-            const pedidoId = document.getElementById("historial-pedido").value;
-            const btnDeshacer = document.getElementById("btn-deshacer");
-            if (pedidoId && pilasHistorial[pedidoId] && pilasHistorial[pedidoId].length > 0) {
-                btnDeshacer.disabled = false;
-            } else {
-                btnDeshacer.disabled = true;
-            }
-        }
-
-        function renderizarPila(pedidoId) {
-            const contenedor = document.getElementById("historial-contenido");
-            const pilaVisual = document.getElementById("pila-visual");
-            
-            if (!pedidoId) {
-                contenedor.innerHTML = '<p class="text-sm text-slate-600">Seleccione un pedido para ver su historial</p>';
-                pilaVisual.innerHTML = '<p class="text-sm text-indigo-600">Seleccione un pedido para ver los cambios pendientes de deshacer</p>';
-                document.getElementById("btn-deshacer").disabled = true;
-                return;
-            }
-
-            const pila = pilasHistorial[pedidoId] || [];
-            if (pila.length === 0) {
-                contenedor.innerHTML = '<p class="text-sm text-amber-600 font-medium">Sin historial de cambios registrados en esta sesión.</p>';
-                pilaVisual.innerHTML = '<p class="text-sm text-indigo-600 font-medium">✓ Pila vacía - No hay cambios para deshacer</p>';
-                document.getElementById("btn-deshacer").disabled = true;
-                return;
-            }
-
-            // Renderizar historial completo
-            let html = '<ul class="space-y-2">';
-            for (let i = pila.length - 1; i >= 0; i--) {
-                html += `
+        // Renderizar historial completo
+        let html = '<ul class="space-y-2">';
+        for (let i = pila.length - 1; i >= 0; i--) {
+          html += `
                     <li class="text-xs bg-white p-2 rounded border border-slate-200 flex justify-between items-center">
                         <span>Cambio de <b>${pila[i].estadoAnterior}</b> a <span class="text-blue-600 font-semibold">${pila[i].nuevoEstado}</span></span>
-                        <span class="text-slate-400">${pila[i].fecha} ${i === pila.length - 1 ? '<span class="bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded text-[10px] ml-2">Tope (Top)</span>' : ''}</span>
+                        <span class="text-slate-400">${pila[i].fecha} ${i === pila.length - 1 ? '<span class="bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded text-[10px] ml-2">Tope (Top)</span>' : ""}</span>
                     </li>`;
-            }
-            html += '</ul>';
-            contenedor.innerHTML = html;
+        }
+        html += "</ul>";
+        contenedor.innerHTML = html;
 
-            // Renderizar pila visual (solo últimos 3 elementos)
-            let pilaHtml = '';
-            for (let i = Math.min(pila.length - 1, 2); i >= 0; i--) {
-                const esUltimo = i === pila.length - 1;
-                pilaHtml += `
-                    <div class="bg-white border-l-4 ${esUltimo ? 'border-indigo-600' : 'border-indigo-300'} rounded p-3 ${esUltimo ? 'ring-2 ring-indigo-300' : ''}">
+        // Renderizar pila visual (solo últimos 3 elementos)
+        let pilaHtml = "";
+        for (let i = Math.min(pila.length - 1, 2); i >= 0; i--) {
+          const esUltimo = i === pila.length - 1;
+          pilaHtml += `
+                    <div class="bg-white border-l-4 ${esUltimo ? "border-indigo-600" : "border-indigo-300"} rounded p-3 ${esUltimo ? "ring-2 ring-indigo-300" : ""}">
                         <div class="flex items-center justify-between">
                             <div class="text-xs">
-                                <p class="font-semibold text-slate-800">${esUltimo ? '⬆️ Tope de Pila' : '▫️ Elemento'}</p>
+                                <p class="font-semibold text-slate-800">${esUltimo ? "⬆️ Tope de Pila" : "▫️ Elemento"}</p>
                                 <p class="text-slate-600"><span class="font-bold">${pila[i].estadoAnterior}</span> → <span class="font-bold text-indigo-600">${pila[i].nuevoEstado}</span></p>
                                 <p class="text-slate-400 text-[10px]">${pila[i].fecha}</p>
                             </div>
-                            ${esUltimo ? '<span class="text-2xl">↩️</span>' : ''}
+                            ${esUltimo ? '<span class="text-2xl">↩️</span>' : ""}
                         </div>
                     </div>`;
-            }
-            if (pilaHtml === '') {
-                pilaHtml = '<p class="text-sm text-indigo-600 font-medium">✓ Pila vacía</p>';
-            }
-            pilaVisual.innerHTML = pilaHtml;
-
-            document.getElementById("btn-deshacer").disabled = false;
         }
+        if (pilaHtml === "") {
+          pilaHtml =
+            '<p class="text-sm text-indigo-600 font-medium">✓ Pila vacía</p>';
+        }
+        pilaVisual.innerHTML = pilaHtml;
+
+        document.getElementById("btn-deshacer").disabled = false;
+      }
     </script>
-</body>
+  </body>
 </html>
