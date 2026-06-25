@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/index-pedidos.css">
 </head>
 <body class="bg-slate-100 text-slate-900 font-sans antialiased min-h-screen flex">
-    <!-- Sidebar -->
     <aside class="w-64 bg-slate-900 text-white flex flex-col fixed h-full shadow-xl z-10">
         <div class="p-5 border-b border-slate-800 flex items-center gap-3">
             <div class="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center font-bold text-white text-lg shadow-md">
@@ -46,9 +45,7 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <div class="flex-1 pl-64 flex flex-col min-h-screen">
-        <!-- Header -->
         <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-0">
             <div class="flex items-center gap-2 text-sm text-slate-500 font-medium">
                 <span>Módulos</span>
@@ -65,7 +62,6 @@
             </button>
         </header>
 
-        <!-- Main Content Area -->
         <main class="p-8 flex-1 overflow-y-auto">
             <div class="max-w-6xl mx-auto space-y-6">
                 <div class="mt-4">
@@ -74,7 +70,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Crear Pedido -->
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="p-6 border-b border-slate-200 bg-slate-50">
                             <h3 class="text-lg font-semibold text-slate-800">Nuevo Pedido</h3>
@@ -109,7 +104,6 @@
                         </form>
                     </div>
 
-                    <!-- Cambiar Estado -->
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="p-6 border-b border-slate-200 bg-slate-50">
                             <h3 class="text-lg font-semibold text-slate-800">Cambiar Estado</h3>
@@ -141,33 +135,57 @@
                         </form>
                     </div>
 
-                    <!-- Cola de Pedidos -->
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                         <div class="p-6 border-b border-slate-200 bg-slate-50">
-                            <h3 class="text-lg font-semibold text-slate-800">Cola de Despacho</h3>
-                            <p class="text-xs text-slate-500 mt-1">Gestione la cola de pedidos.</p>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-800">Cola de Despacho</h3>
+                                    <p class="text-xs text-slate-500 mt-1">Gestione la cola de pedidos (FIFO).</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-semibold text-slate-600 uppercase">Estado:</span>
+                                    <div id="indicador-cola" class="w-4 h-4 rounded-full bg-green-500 animate-pulse"></div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="p-6 space-y-4">
-                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                                <p class="text-xs text-amber-600 font-semibold mb-2">Pedidos en Cola:</p>
-                                <p id="tamanio-cola" class="text-3xl font-bold text-amber-700">0</p>
+                            <!-- Contador principal -->
+                            <div id="cola-estado" class="bg-gradient-to-r from-amber-50 to-amber-100 border-2 border-amber-200 rounded-lg p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-xs text-amber-700 font-semibold uppercase mb-1">📋 Pedidos en Cola:</p>
+                                        <p id="tamanio-cola" class="text-4xl font-bold text-amber-700">0</p>
+                                    </div>
+                                    <div class="text-5xl">📦</div>
+                                </div>
                             </div>
 
-                            <button type="button" onclick="procesarSiguiente()" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
-                                Procesar Siguiente
+                            <!-- Lista visual de la cola -->
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-600 mb-3">Próximos a procesar:</p>
+                                <div id="lista-cola" class="space-y-2">
+                                    <p class="text-sm text-slate-500 text-center py-4">Cola vacía</p>
+                                </div>
+                            </div>
+
+                            <!-- Botón procesar -->
+                            <button type="button" id="btn-procesar" onclick="procesarSiguiente()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-slate-400 disabled:to-slate-400 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg text-sm transition-all transform hover:scale-105 flex items-center justify-center gap-2" disabled>
+                                <span>⚡</span>
+                                <span>Procesar Siguiente</span>
+                                <span>→</span>
                             </button>
 
-                            <div id="info-siguiente" class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm hidden">
-                                <p class="text-slate-600 mb-2">Próximo a procesar:</p>
-                                <p id="siguiente-numero" class="font-bold text-slate-800">Pedido #-</p>
-                                <p id="siguiente-estado" class="text-slate-600 text-xs mt-1">Estado: -</p>
+                            <!-- Info del siguiente -->
+                            <div id="info-siguiente" class="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg p-4 hidden">
+                                <p class="text-xs text-green-700 font-semibold mb-2">✅ Actualmente en proceso:</p>
+                                <p id="siguiente-numero" class="text-lg font-bold text-green-800">Pedido #-</p>
+                                <p id="siguiente-estado" class="text-sm text-green-700 mt-1">Estado: -</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tabla de Pedidos -->
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="p-6 border-b border-slate-200 bg-slate-50">
                         <h3 class="text-lg font-semibold text-slate-800">Listado de Pedidos</h3>
@@ -193,11 +211,18 @@
                     </div>
                 </div>
 
-                <!-- Historial de Cambios -->
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="p-6 border-b border-slate-200 bg-slate-50">
-                        <h3 class="text-lg font-semibold text-slate-800">Historial de Cambios de Estado</h3>
-                        <p class="text-xs text-slate-500 mt-1">Visualice y deshaga cambios de estado (Pila/Stack)</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-800">Historial de Cambios de Estado</h3>
+                                <p class="text-xs text-slate-500 mt-1">Visualice y deshaga cambios de estado (Pila/Stack)</p>
+                            </div>
+                            <div class="bg-indigo-100 text-indigo-800 rounded-lg px-4 py-2 text-center">
+                                <p class="text-xs font-semibold">PILA</p>
+                                <p id="contador-pila" class="text-2xl font-bold">0</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="p-6 space-y-5">
@@ -209,10 +234,19 @@
                                 </select>
                             </div>
 
-                            <div class="flex items-end">
-                                <button type="button" onclick="deshacerEstado()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
-                                    ↩️ Deshacer Último Cambio
+                            <div class="flex items-end gap-2">
+                                <button type="button" id="btn-deshacer" onclick="mostrarModalDeshacer()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors flex items-center justify-center gap-2" disabled>
+                                    <span>↩️</span>
+                                    <span>Deshacer Último Cambio</span>
                                 </button>
+                            </div>
+                        </div>
+
+                        <!-- Panel visual de la pila -->
+                        <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 rounded-lg p-4">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-indigo-800 mb-3">📚 Contenido de la Pila (LIFO)</p>
+                            <div id="pila-visual" class="space-y-2 max-h-48 overflow-y-auto">
+                                <p class="text-sm text-indigo-600">Seleccione un pedido para ver los cambios pendientes de deshacer</p>
                             </div>
                         </div>
 
@@ -226,5 +260,300 @@
     </div>
 
     <script src="js/index-pedidos.js"></script>
+
+    <!-- MODAL PARA CONFIRMAR DESHACER -->
+    <div id="modal-deshacer" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center" onclick="cerrarModalDeshacer(event)">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 transform transition-all" onclick="event.stopPropagation()">
+            <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 p-6 rounded-t-xl">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <span>↩️</span>
+                    <span>Confirmar Deshacer</span>
+                </h2>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                    <p class="text-sm text-indigo-900 font-medium mb-2">Cambio a revertir:</p>
+                    <div class="space-y-1">
+                        <p id="modal-cambio-de" class="text-sm text-slate-700">De: <span class="font-bold text-indigo-600">-</span></p>
+                        <p id="modal-cambio-a" class="text-sm text-slate-700">A: <span class="font-bold text-indigo-600">-</span></p>
+                        <p id="modal-cambio-fecha" class="text-xs text-slate-500 mt-2">Fecha: -</p>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-600">¿Está seguro que desea deshacer este cambio? Esta acción se puede volver a deshacer.</p>
+            </div>
+
+            <div class="p-6 border-t border-slate-200 flex gap-3">
+                <button onclick="cerrarModalDeshacer()" class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors">
+                    Cancelar
+                </button>
+                <button onclick="confirmarDeshacer()" class="flex-1 px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+                    Deshacer
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Estructuras de Datos
+        const colaDespacho = []; // FIFO (First In, First Out)
+        const pilasHistorial = {}; // LIFO (Last In, First Out) agrupadas por ID de pedido
+
+        // Evento simulado para actualizar la UI cuando index-pedidos.js añada pedidos
+        document.addEventListener("DOMContentLoaded", () => {
+            // Escuchar el cambio en el selector de historial para renderizar la pila del pedido
+            const selectHistorial = document.getElementById("historial-pedido");
+            if (selectHistorial) {
+                selectHistorial.addEventListener("change", (e) => {
+                    renderizarPila(e.target.value);
+                });
+            }
+        });
+
+        // Función para agregar un pedido a la Cola de Despacho
+        function encolarPedido(pedido) {
+            colaDespacho.push(pedido);
+            actualizarUICola();
+        }
+
+        // Procesar Siguiente en la Cola (FIFO)
+        function procesarSiguiente() {
+            if (colaDespacho.length === 0) {
+                if (typeof mostrarToast !== 'undefined') {
+                    mostrarToast('⚠️ No hay pedidos en la cola de despacho', 'warning');
+                } else {
+                    alert("No hay pedidos en la cola de despacho.");
+                }
+                return;
+            }
+
+            // Obtener el primero (FIFO)
+            const pedidoProcesado = colaDespacho.shift();
+            
+            // Animación del botón
+            const btn = document.getElementById("btn-procesar");
+            btn.style.transform = "scale(0.95)";
+            setTimeout(() => {
+                btn.style.transform = "scale(1)";
+            }, 100);
+
+            // Toast de éxito
+            if (typeof mostrarToast !== 'undefined') {
+                mostrarToast(`✅ Procesando Pedido #${pedidoProcesado.id} - Cliente: ${pedidoProcesado.cliente}`, 'success');
+            } else {
+                alert(`Procesando pedido #${pedidoProcesado.id} del cliente ${pedidoProcesado.cliente}`);
+            }
+
+            console.log(`✅ Pedido #${pedidoProcesado.id} procesado. Cola: ${colaDespacho.length} elementos`);
+            actualizarUICola();
+        }
+
+        function actualizarUICola() {
+            const tamanio = colaDespacho.length;
+            document.getElementById("tamanio-cola").innerText = tamanio;
+            
+            // Actualizar indicador de estado (verde/amarillo/rojo)
+            const indicador = document.getElementById("indicador-cola");
+            if (tamanio <= 0) {
+                indicador.className = "w-4 h-4 rounded-full bg-green-500";
+            } else if (tamanio <= 5) {
+                indicador.className = "w-4 h-4 rounded-full bg-yellow-500 animate-pulse";
+            } else if (tamanio <= 10) {
+                indicador.className = "w-4 h-4 rounded-full bg-orange-500 animate-pulse";
+            } else {
+                indicador.className = "w-4 h-4 rounded-full bg-red-500 animate-bounce";
+            }
+
+            // Renderizar lista de cola (máximo 4 elementos)
+            const listaHtml = document.getElementById("lista-cola");
+            if (colaDespacho.length === 0) {
+                listaHtml.innerHTML = '<p class="text-sm text-slate-500 text-center py-4">✓ Cola vacía</p>';
+                document.getElementById("btn-procesar").disabled = true;
+                document.getElementById("info-siguiente").classList.add("hidden");
+            } else {
+                let html = '';
+                for (let i = 0; i < Math.min(colaDespacho.length, 4); i++) {
+                    const pedido = colaDespacho[i];
+                    const esUltimo = i === colaDespacho.length - 1;
+                    const esPrimero = i === 0;
+                    html += `
+                        <div class="bg-white border-l-4 ${esPrimero ? 'border-green-500 ring-2 ring-green-200' : 'border-slate-300'} rounded p-3 transform transition-all ${esPrimero ? 'scale-105' : ''}">
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs">
+                                    <p class="font-semibold text-slate-800">${esPrimero ? '🚀 Siguiente' : i === 1 ? '⏳ Esperando' : '⋯ En cola'}</p>
+                                    <p class="text-slate-600 font-bold">Pedido #${pedido.id}</p>
+                                    <p class="text-slate-500 text-[10px]">Cliente: ${pedido.cliente || 'N/A'}</p>
+                                </div>
+                                <span class="text-2xl">${esPrimero ? '▶️' : i === 1 ? '⏸️' : '📋'}</span>
+                            </div>
+                        </div>`;
+                }
+                if (colaDespacho.length > 4) {
+                    html += `<p class="text-xs text-center text-slate-500 py-2">... y ${colaDespacho.length - 4} más en cola</p>`;
+                }
+                listaHtml.innerHTML = html;
+                document.getElementById("btn-procesar").disabled = false;
+            }
+
+            // Actualizar info del siguiente
+            const infoSiguiente = document.getElementById("info-siguiente");
+            if (colaDespacho.length > 0) {
+                infoSiguiente.classList.remove("hidden");
+                document.getElementById("siguiente-numero").innerText = `Pedido #${colaDespacho[0].id}`;
+                document.getElementById("siguiente-estado").innerText = `Estado: ${colaDespacho[0].estado || 'PENDIENTE'}`;
+            } else {
+                infoSiguiente.classList.add("hidden");
+            }
+        }
+
+        // Registrar un cambio en la Pila (LIFO) de un pedido
+        function registrarCambioEstado(pedidoId, estadoAnterior, nuevoEstado) {
+            if (!pilasHistorial[pedidoId]) {
+                pilasHistorial[pedidoId] = [];
+            }
+            // Hacemos push al historial del pedido
+            pilasHistorial[pedidoId].push({
+                estadoAnterior: estadoAnterior,
+                nuevoEstado: nuevoEstado,
+                fecha: new Date().toLocaleTimeString()
+            });
+            renderizarPila(pedidoId);
+            actualizarContadorPila();
+        }
+
+        // Mostrar modal para confirmar deshacer
+        function mostrarModalDeshacer() {
+            const pedidoId = document.getElementById("historial-pedido").value;
+            if (!pedidoId || !pilasHistorial[pedidoId] || pilasHistorial[pedidoId].length === 0) {
+                alert("No hay cambios para deshacer en este pedido.");
+                return;
+            }
+
+            const ultimoCambio = pilasHistorial[pedidoId][pilasHistorial[pedidoId].length - 1];
+            document.getElementById("modal-cambio-de").querySelector("span").textContent = ultimoCambio.estadoAnterior;
+            document.getElementById("modal-cambio-a").querySelector("span").textContent = ultimoCambio.nuevoEstado;
+            document.getElementById("modal-cambio-fecha").textContent = "Fecha: " + ultimoCambio.fecha;
+
+            document.getElementById("modal-deshacer").classList.remove("hidden");
+        }
+
+        // Cerrar modal
+        function cerrarModalDeshacer(event) {
+            if (event && event.target !== document.getElementById("modal-deshacer")) return;
+            document.getElementById("modal-deshacer").classList.add("hidden");
+        }
+
+        // Confirmar y ejecutar deshacer
+        function confirmarDeshacer() {
+            const pedidoId = document.getElementById("historial-pedido").value;
+            if (!pedidoId || !pilasHistorial[pedidoId] || pilasHistorial[pedidoId].length === 0) {
+                alert("No hay cambios para deshacer en este pedido.");
+                return;
+            }
+
+            const ultimoCambio = pilasHistorial[pedidoId].pop(); // Saca el último (LIFO)
+            console.log(`↩️ Deshaciendo cambio: Volviendo de ${ultimoCambio.nuevoEstado} a ${ultimoCambio.estadoAnterior}`);
+            
+            cerrarModalDeshacer();
+            renderizarPila(pedidoId);
+            actualizarContadorPila();
+            
+            // Mostrar notificación de éxito
+            if (typeof mostrarToast !== 'undefined') {
+                mostrarToast(`↩️ Cambio deshecho: ${ultimoCambio.estadoAnterior}`, 'success');
+            }
+        }
+
+        // Deshacer el último cambio usando la Pila (LIFO)
+        function deshacerEstado() {
+            const pedidoId = document.getElementById("historial-pedido").value;
+            if (!pedidoId || !pilasHistorial[pedidoId] || pilasHistorial[pedidoId].length === 0) {
+                alert("No hay cambios para deshacer en este pedido.");
+                return;
+            }
+
+            const ultimoCambio = pilasHistorial[pedidoId].pop(); // Saca el último (LIFO)
+            alert(`Deshaciendo cambio: Volviendo de ${ultimoCambio.nuevoEstado} a ${ultimoCambio.estadoAnterior}`);
+            
+            // Aquí puedes llamar a una función de tu index-pedidos.js para actualizar la API si fuese necesario
+            // ejemplo: actualizarEstadoEnServidor(pedidoId, ultimoCambio.estadoAnterior);
+
+            renderizarPila(pedidoId);
+        }
+
+        // Actualizar contador de pila
+        function actualizarContadorPila() {
+            let totalElementos = 0;
+            for (let pedidoId in pilasHistorial) {
+                totalElementos += pilasHistorial[pedidoId].length;
+            }
+            document.getElementById("contador-pila").textContent = totalElementos;
+            
+            // Actualizar estado del botón
+            const pedidoId = document.getElementById("historial-pedido").value;
+            const btnDeshacer = document.getElementById("btn-deshacer");
+            if (pedidoId && pilasHistorial[pedidoId] && pilasHistorial[pedidoId].length > 0) {
+                btnDeshacer.disabled = false;
+            } else {
+                btnDeshacer.disabled = true;
+            }
+        }
+
+        function renderizarPila(pedidoId) {
+            const contenedor = document.getElementById("historial-contenido");
+            const pilaVisual = document.getElementById("pila-visual");
+            
+            if (!pedidoId) {
+                contenedor.innerHTML = '<p class="text-sm text-slate-600">Seleccione un pedido para ver su historial</p>';
+                pilaVisual.innerHTML = '<p class="text-sm text-indigo-600">Seleccione un pedido para ver los cambios pendientes de deshacer</p>';
+                document.getElementById("btn-deshacer").disabled = true;
+                return;
+            }
+
+            const pila = pilasHistorial[pedidoId] || [];
+            if (pila.length === 0) {
+                contenedor.innerHTML = '<p class="text-sm text-amber-600 font-medium">Sin historial de cambios registrados en esta sesión.</p>';
+                pilaVisual.innerHTML = '<p class="text-sm text-indigo-600 font-medium">✓ Pila vacía - No hay cambios para deshacer</p>';
+                document.getElementById("btn-deshacer").disabled = true;
+                return;
+            }
+
+            // Renderizar historial completo
+            let html = '<ul class="space-y-2">';
+            for (let i = pila.length - 1; i >= 0; i--) {
+                html += `
+                    <li class="text-xs bg-white p-2 rounded border border-slate-200 flex justify-between items-center">
+                        <span>Cambio de <b>${pila[i].estadoAnterior}</b> a <span class="text-blue-600 font-semibold">${pila[i].nuevoEstado}</span></span>
+                        <span class="text-slate-400">${pila[i].fecha} ${i === pila.length - 1 ? '<span class="bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded text-[10px] ml-2">Tope (Top)</span>' : ''}</span>
+                    </li>`;
+            }
+            html += '</ul>';
+            contenedor.innerHTML = html;
+
+            // Renderizar pila visual (solo últimos 3 elementos)
+            let pilaHtml = '';
+            for (let i = Math.min(pila.length - 1, 2); i >= 0; i--) {
+                const esUltimo = i === pila.length - 1;
+                pilaHtml += `
+                    <div class="bg-white border-l-4 ${esUltimo ? 'border-indigo-600' : 'border-indigo-300'} rounded p-3 ${esUltimo ? 'ring-2 ring-indigo-300' : ''}">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xs">
+                                <p class="font-semibold text-slate-800">${esUltimo ? '⬆️ Tope de Pila' : '▫️ Elemento'}</p>
+                                <p class="text-slate-600"><span class="font-bold">${pila[i].estadoAnterior}</span> → <span class="font-bold text-indigo-600">${pila[i].nuevoEstado}</span></p>
+                                <p class="text-slate-400 text-[10px]">${pila[i].fecha}</p>
+                            </div>
+                            ${esUltimo ? '<span class="text-2xl">↩️</span>' : ''}
+                        </div>
+                    </div>`;
+            }
+            if (pilaHtml === '') {
+                pilaHtml = '<p class="text-sm text-indigo-600 font-medium">✓ Pila vacía</p>';
+            }
+            pilaVisual.innerHTML = pilaHtml;
+
+            document.getElementById("btn-deshacer").disabled = false;
+        }
+    </script>
 </body>
 </html>

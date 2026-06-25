@@ -4,6 +4,100 @@ const API_BASE_URL = 'http://localhost:8080/api';
 let pedidosDisponibles = [];
 let clientesDisponibles = [];
 
+// ============== ESTRUCTURA DE DATOS: PILA (STACK) ==============
+class Stack {
+    constructor() {
+        this.items = [];
+    }
+
+    push(element) {
+        this.items.push(element);
+    }
+
+    pop() {
+        if (this.isEmpty()) return null;
+        return this.items.pop();
+    }
+
+    peek() {
+        if (this.isEmpty()) return null;
+        return this.items[this.items.length - 1];
+    }
+
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+    size() {
+        return this.items.length;
+    }
+
+    clear() {
+        this.items = [];
+    }
+
+    print() {
+        console.log(this.items.toString());
+    }
+}
+
+// ============== ESTRUCTURA DE DATOS: COLA (QUEUE) ==============
+class Queue {
+    constructor() {
+        this.items = {};
+        this.count = 0;
+        this.lowestCount = 0;
+    }
+
+    enqueue(element) {
+        this.items[this.count] = element;
+        this.count++;
+    }
+
+    dequeue() {
+        if (this.isEmpty()) return null;
+        const result = this.items[this.lowestCount];
+        delete this.items[this.lowestCount];
+        this.lowestCount++;
+        return result;
+    }
+
+    peek() {
+        if (this.isEmpty()) return null;
+        return this.items[this.lowestCount];
+    }
+
+    isEmpty() {
+        return this.count - this.lowestCount === 0;
+    }
+
+    size() {
+        return this.count - this.lowestCount;
+    }
+
+    clear() {
+        this.items = {};
+        this.count = 0;
+        this.lowestCount = 0;
+    }
+
+    print() {
+        console.log(Object.values(this.items).toString());
+    }
+
+    toArray() {
+        const result = [];
+        for (let i = this.lowestCount; i < this.count; i++) {
+            result.push(this.items[i]);
+        }
+        return result;
+    }
+}
+
+// ============== INSTANCIAS GLOBALES ==============
+const pilaHistorialEstados = new Stack(); // Pila para deshacer cambios de estado
+const colaLocalPedidos = new Queue(); // Cola para manejar pedidos en secuencia
+
 // Función para mostrar notificaciones Toast
 function mostrarToast(mensaje, tipo = 'info', duracion = 3000) {
     const toast = document.createElement('div');
@@ -27,7 +121,18 @@ function inicializarPedidos() {
 
     document.getElementById('form-pedido').addEventListener('submit', crearPedido);
     document.getElementById('form-estado').addEventListener('submit', cambiarEstado);
-    document.getElementById('historial-pedido').addEventListener('change', mostrarHistorialPedido);
+    document.getElementById('historial-pedido').addEventListener('change', (e) => {
+        mostrarHistorialPedido(e);
+        // ✨ Actualizar estado del botón cuando cambia el pedido
+        if (typeof actualizarContadorPila !== 'undefined') {
+            actualizarContadorPila();
+        }
+    });
+
+    // ✨ Actualizar contador inicial
+    if (typeof actualizarContadorPila !== 'undefined') {
+        actualizarContadorPila();
+    }
 }
 
 // Cargar clientes desde API
@@ -80,6 +185,23 @@ async function cargarPedidos() {
                 select.value = selectedValue;
             }
         });
+
+        // ✨ SINCRONIZAR COLA CON PEDIDOS PENDIENTES
+        if (typeof colaDespacho !== 'undefined') {
+            colaDespacho.length = 0; // Vaciar cola
+            pedidos.forEach(ped => {
+                if (ped.estado === 'PENDIENTE' || ped.estado === 'EN_PREPARACION') {
+                    colaDespacho.push({
+                        id: ped.id,
+                        cliente: ped.clienteNombre || 'Cliente',
+                        estado: ped.estado
+                    });
+                }
+            });
+            if (typeof actualizarUICola !== 'undefined') {
+                actualizarUICola();
+            }
+        }
     } catch (error) {
         console.error('Error cargando pedidos:', error);
         mostrarToast('Error al cargar pedidos', 'error');
@@ -118,10 +240,30 @@ function actualizarTablaPedidos(pedidos) {
 async function crearPedido(e) {
     e.preventDefault();
 
+    const clienteId = document.getElementById('pedido-cliente').value;
+    const prioridad = document.getElementById('pedido-prioridad').value;
+    const total = parseFloat(document.getElementById('pedido-total').value);
+
+    // ✨ VALIDACIONES MEJORADAS
+    if (!clienteId) {
+        mostrarToast('⚠️ Debe seleccionar un cliente', 'warning');
+        return;
+    }
+
+    if (!prioridad || prioridad < 1 || prioridad > 3) {
+        mostrarToast('⚠️ Debe seleccionar una prioridad válida', 'warning');
+        return;
+    }
+
+    if (isNaN(total) || total <= 0) {
+        mostrarToast('⚠️ El monto total debe ser mayor a 0', 'warning');
+        return;
+    }
+
     const pedido = {
-        clienteId: parseInt(document.getElementById('pedido-cliente').value),
-        prioridad: parseInt(document.getElementById('pedido-prioridad').value),
-        total: parseFloat(document.getElementById('pedido-total').value) || 0,
+        clienteId: parseInt(clienteId),
+        prioridad: parseInt(prioridad),
+        total: total,
         estado: 'PENDIENTE'
     };
 
@@ -135,16 +277,28 @@ async function crearPedido(e) {
         });
 
         if (response.ok) {
+            const nuevoPedido = await response.json();
             mostrarToast('✅ Pedido creado exitosamente', 'success');
             document.getElementById('form-pedido').reset();
+
+            // ✨ AÑADIR A LA COLA DEL HTML
+            if (typeof encolarPedido !== 'undefined') {
+                const clienteNombre = clientesDisponibles.find(c => c.id === parseInt(clienteId))?.nombre || 'Cliente';
+                encolarPedido({
+                    id: nuevoPedido.id || nuevoPedido.clienteId,
+                    cliente: clienteNombre,
+                    estado: 'PENDIENTE'
+                });
+            }
+
             cargarPedidos();
             actualizarColaPedidos();
         } else {
-            mostrarToast('Error al crear pedido', 'error');
+            mostrarToast('❌ Error al crear pedido', 'error');
         }
     } catch (error) {
         console.error('Error:', error);
-        mostrarToast('Error de conexión', 'error');
+        mostrarToast('❌ Error de conexión', 'error');
     }
 }
 
@@ -156,6 +310,24 @@ async function cambiarEstado(e) {
     const nuevoEstado = document.getElementById('nuevo-estado').value;
 
     try {
+        // Obtener estado anterior antes de cambiar
+        const pedidoActual = pedidosDisponibles.find(p => p.id === pedidoId);
+        if (pedidoActual) {
+            // Guardar en la PILA para poder deshacer después
+            pilaHistorialEstados.push({
+                pedidoId: pedidoId,
+                estadoAnterior: pedidoActual.estado,
+                estadoNuevo: nuevoEstado,
+                fecha: new Date()
+            });
+            console.log(`📚 Cambio guardado en pila. Tamaño pila: ${pilaHistorialEstados.size()}`);
+
+            // ✨ REGISTRAR TAMBIÉN EN LA PILA VISUAL DEL HTML
+            if (typeof registrarCambioEstado !== 'undefined') {
+                registrarCambioEstado(pedidoId, pedidoActual.estado, nuevoEstado);
+            }
+        }
+
         await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/estados?estado=${nuevoEstado}`, {
             method: 'POST'
         });
@@ -174,6 +346,11 @@ async function cambiarEstado(e) {
             mostrarToast('✅ Estado actualizado correctamente', 'success');
             document.getElementById('form-estado').reset();
             cargarPedidos();
+
+            // ✨ SINCRONIZAR COLA CUANDO CAMBIO ESTADO
+            if (typeof actualizarUICola !== 'undefined') {
+                actualizarUICola();
+            }
         } else {
             mostrarToast('Error al actualizar estado', 'error');
         }
@@ -188,6 +365,16 @@ async function actualizarColaPedidos() {
     try {
         const response = await fetch(`${API_BASE_URL}/pedidos/cola/tamanio`);
         const colaData = await response.json();
+
+        // Mantener sincronizada la COLA LOCAL con la API
+        colaLocalPedidos.clear();
+        if (colaData.tamanio > 0) {
+            colaLocalPedidos.enqueue({
+                id: colaData.idPrimero,
+                estado: colaData.estatusPrimero
+            });
+        }
+        console.log(`📋 Cola actualizada. Tamaño: ${colaLocalPedidos.size()}`);
 
         document.getElementById('tamanio-cola').textContent = colaData.tamanio;
 
@@ -260,7 +447,7 @@ async function mostrarHistorialPedido(e) {
     }
 }
 
-// Deshacer estado (pila)
+// Deshacer estado (usando PILA) - Integrado con modal
 async function deshacerEstado() {
     const pedidoId = parseInt(document.getElementById('historial-pedido').value);
 
@@ -269,22 +456,46 @@ async function deshacerEstado() {
         return;
     }
 
+    // Obtener último cambio de la PILA
+    const ultimoCambio = pilaHistorialEstados.peek();
+
+    if (!ultimoCambio || ultimoCambio.pedidoId !== pedidoId) {
+        mostrarToast('No hay cambios para deshacer', 'warning');
+        return;
+    }
+
     try {
-        const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/estados/deshacer`, {
-            method: 'POST'
+        // Pop del stack para remover
+        pilaHistorialEstados.pop();
+
+        // Restaurar estado anterior
+        const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                estado: ultimoCambio.estadoAnterior
+            })
         });
 
         if (response.ok) {
-            const estado = await response.json();
-            mostrarToast(`↩️ Cambio deshecho: ${estado.estado}`, 'success');
+            mostrarToast(`↩️ Cambio deshecho: ${ultimoCambio.estadoAnterior}`, 'success');
+            console.log(`📚 Cambio deshecho. Tamaño pila: ${pilaHistorialEstados.size()}`);
+            
+            // ✨ Actualizar la pila visual si existe la función
+            if (typeof actualizarContadorPila !== 'undefined') {
+                actualizarContadorPila();
+            }
+            
             mostrarHistorialPedido({ target: document.getElementById('historial-pedido') });
             cargarPedidos();
         } else {
-            mostrarToast('No hay cambios para deshacer', 'warning');
+            mostrarToast('Error al deshacer cambio', 'error');
         }
     } catch (error) {
         console.error('Error:', error);
-        mostrarToast('Error al deshacer cambio', 'error');
+        mostrarToast('Error de conexión', 'error');
     }
 }
 
@@ -294,6 +505,38 @@ function verDetallesPedido(pedidoId) {
     if (pedido) {
         alert(`Pedido #${pedido.id}\nCliente: ${pedido.clienteNombre}\nEstado: ${pedido.estado}\nTotal: S/. ${pedido.total.toFixed(2)}`);
     }
+}
+
+// ============== FUNCIONES AUXILIARES PARA DEBUG ==============
+// Ver información de la PILA de historial
+function verEstadoPila() {
+    if (pilaHistorialEstados.isEmpty()) {
+        console.log('📚 PILA VACÍA - No hay cambios para deshacer');
+    } else {
+        console.log(`📚 PILA DE HISTORIAL - Tamaño: ${pilaHistorialEstados.size()}`);
+        console.log('Últimos cambios (LIFO):', pilaHistorialEstados.items);
+    }
+}
+
+// Ver información de la COLA de pedidos
+function verEstadoCola() {
+    if (colaLocalPedidos.isEmpty()) {
+        console.log('📋 COLA VACÍA - No hay pedidos en cola');
+    } else {
+        console.log(`📋 COLA DE PEDIDOS - Tamaño: ${colaLocalPedidos.size()}`);
+        console.log('Próximo pedido:', colaLocalPedidos.peek());
+        console.log('Todos los pedidos en cola:', colaLocalPedidos.toArray());
+    }
+}
+
+// Mostrar estadísticas de estructuras de datos
+function mostrarEstadisticasEstructuras() {
+    console.log('========== ESTADÍSTICAS DE ESTRUCTURAS ==========');
+    console.log(`📚 PILA: ${pilaHistorialEstados.size()} elementos en historial`);
+    console.log(`📋 COLA: ${colaLocalPedidos.size()} pedidos en cola`);
+    verEstadoPila();
+    verEstadoCola();
+    console.log('===============================================');
 }
 
 // Eliminar pedido
