@@ -478,12 +478,93 @@ async function actualizarContenidoHistorial(pedidoId) {
     }
 }
 
-// ─── HELPERS ──────────────────────────────────────────────────────────────────
-function verDetallesPedido(pedidoId) {
-    const ped = pedidosDisponibles.find(p => p.id === pedidoId);
-    if (ped) {
-        alert(`Pedido #${ped.id}\nTienda: ${ped.clienteNombre}\nEstado: ${ped.estado}\nTotal: S/. ${(ped.total || 0).toFixed(2)}`);
+// ─── MODAL COMPROBANTE ────────────────────────────────────────────────────────
+
+async function verDetallesPedido(pedidoId) {
+    try {
+        // Siempre fetch para tener detalles completos con precios
+        const res = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}`);
+        const ped = await res.json();
+
+        // Fetch del cliente para RUC y dirección
+        let cliente = null;
+        if (ped.clienteId) {
+            try {
+                const resC = await fetch(`${API_BASE_URL}/clientes/${ped.clienteId}`);
+                cliente = await resC.json();
+            } catch (_) {}
+        }
+
+        // ── Orden ──
+        document.getElementById('comp-orden').textContent =
+            `#ORD-${String(ped.id).padStart(3, '0')}`;
+
+        // ── Destinatario ──
+        document.getElementById('comp-cliente').textContent = ped.clienteNombre || '—';
+        document.getElementById('comp-ruc').textContent     = cliente?.dni      || '—';
+        document.getElementById('comp-dir').textContent     = cliente?.direccion || '—';
+
+        // ── Fecha ──
+        document.getElementById('comp-fecha').textContent = ped.fecha
+            ? new Date(ped.fecha).toLocaleDateString('es-PE',
+                { day: '2-digit', month: '2-digit', year: 'numeric' })
+            : '—';
+
+        // ── Prioridad ──
+        const prioEl  = document.getElementById('comp-prioridad');
+        const prioMap = {
+            1: { label: '🔴 Urgente', cls: 'bg-red-100 text-red-700' },
+            2: { label: '🔵 Normal',  cls: 'bg-blue-100 text-blue-700' },
+            3: { label: '⚪ Baja',    cls: 'bg-slate-100 text-slate-600' }
+        };
+        const prio = prioMap[ped.prioridad] || prioMap[3];
+        prioEl.textContent = prio.label;
+        prioEl.className   = `text-xs font-bold px-2 py-0.5 rounded-full ${prio.cls}`;
+
+        // ── Estado ──
+        const estadoEl  = document.getElementById('comp-estado');
+        const estadoMap = {
+            'PENDIENTE':      'bg-yellow-100 text-yellow-700',
+            'EN_PREPARACION': 'bg-blue-100 text-blue-700',
+            'ENVIADO':        'bg-emerald-100 text-emerald-700',
+            'ENTREGADO':      'bg-slate-100 text-slate-600'
+        };
+        estadoEl.textContent = ped.estado || '—';
+        estadoEl.className   = `text-xs font-bold px-2 py-0.5 rounded-full ${estadoMap[ped.estado] || 'bg-slate-100 text-slate-600'}`;
+
+        // ── Tabla detalles ──
+        const detalles = ped.detalles || [];
+        document.getElementById('comp-detalles').innerHTML = detalles.length
+            ? detalles.map((d, i) => `
+                <tr class="${i % 2 === 1 ? 'bg-gray-50' : 'bg-white'}">
+                    <td class="px-4 py-2.5 text-slate-700 font-medium text-sm">${d.productoNombre || '—'}</td>
+                    <td class="px-4 py-2.5 text-center text-slate-600 text-sm">${d.cantidad}</td>
+                    <td class="px-4 py-2.5 text-right text-slate-600 text-sm">S/. ${(d.precioUnitario || 0).toFixed(2)}</td>
+                    <td class="px-4 py-2.5 text-right font-semibold text-slate-800 text-sm">S/. ${(d.subtotal || 0).toFixed(2)}</td>
+                </tr>`).join('')
+            : `<tr><td colspan="4" class="px-4 py-4 text-center text-slate-400 text-sm">Sin productos</td></tr>`;
+
+        // ── Resumen ──
+        document.getElementById('comp-cantidad').textContent = `${ped.cantidadProductos || 0} unidades`;
+        document.getElementById('comp-total').textContent    = `S/. ${(ped.total || 0).toFixed(2)}`;
+
+        // ── Abrir modal ──
+        const modal = document.getElementById('modal-comprobante');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+    } catch (e) {
+        console.error(e);
+        mostrarToast('Error al cargar el comprobante', 'error');
     }
+}
+
+function cerrarComprobante(event) {
+    // Si el evento viene del fondo oscuro (no del card blanco), cerrar
+    if (event && event.target !== document.getElementById('modal-comprobante')) return;
+    const modal = document.getElementById('modal-comprobante');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
 }
 
 async function eliminarPedido(id) {
