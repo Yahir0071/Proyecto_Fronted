@@ -132,69 +132,110 @@ function renderListaProveedores() {
     `).join('');
 }
 
-// ─── ALERTAS ──────────────────────────────────────────────────────────────────
+// ─── INVENTARIO GENERAL ───────────────────────────────────────────────────────
 async function cargarAlertas() {
     try {
-        const res = await fetch(`${API_BASE_URL}/productos/alertas`);
-        const alertas = await res.json();
-        renderTablaAlertas(alertas);
+        const res = await fetch(`${API_BASE_URL}/productos`);
+        const productos = await res.json();
+        // Sincronizamos el array global también
+        productosDisponibles = productos;
+        renderTablaAlertas(productos);
     } catch (e) {
-        console.error('Error cargando alertas:', e);
+        console.error('Error cargando inventario:', e);
     }
 }
 
-function renderTablaAlertas(alertas) {
+function renderTablaAlertas(productos) {
     const tbody = document.getElementById('tabla-alertas');
 
-    if (alertas.length === 0) {
+    if (!productos || productos.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="6" class="px-5 py-6 text-center text-emerald-600 font-medium">
-                    ✅ Todos los productos tienen stock suficiente.
+                <td colspan="6" class="px-5 py-6 text-center text-slate-500 font-medium">
+                    No hay productos registrados en el almacén.
                 </td>
             </tr>`;
         return;
     }
 
-    tbody.innerHTML = alertas.map(p => {
-        const transitando = enTransito.has(p.id);
-        const estadoBadge = transitando
-            ? `<span class="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">En Tránsito</span>`
-            : `<span class="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">Crítico</span>`;
+    tbody.innerHTML = productos.map(p => {
+        const esCritico   = p.stockActual <= p.stockMinimo;
+        const enTransito_ = enTransito.has(p.id);
 
-        const accionBtn = transitando
-            ? `<span class="text-xs text-slate-400 italic">Solicitud enviada</span>`
-            : `<button onclick="solicitarAProveedor(${p.id})"
-                class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors">
-                Solicitar a Proveedor
-               </button>`;
+        // ── Proveedor ──
+        const proveedor     = proveedoresDisponibles.find(pv => pv.id === p.proveedorId);
+        const nombreProv    = proveedor
+            ? proveedor.nombre
+            : '<span class="text-slate-400 italic">Sin asignar</span>';
 
-        // Buscar proveedor del producto si existe el campo proveedorId
-        const proveedor = proveedoresDisponibles.find(pv => pv.id === p.proveedorId);
-        const nombreProv = proveedor ? proveedor.nombre : '<span class="text-slate-400 italic">Sin asignar</span>';
+        // ── Stock Actual coloreado ──
+        const stockColor = esCritico
+            ? 'font-bold text-red-600'
+            : 'font-bold text-emerald-600';
 
+        // ── Caso C: En Tránsito ──
+        if (enTransito_) {
+            return `
+            <tr id="alerta-row-${p.id}" class="border-b border-slate-100 last:border-0">
+                <td class="px-5 py-3 font-medium text-slate-800">${p.nombre}</td>
+                <td class="px-5 py-3 text-center ${stockColor}">${p.stockActual}</td>
+                <td class="px-5 py-3 text-center text-slate-600">${p.stockMinimo}</td>
+                <td class="px-5 py-3 text-slate-700">${nombreProv}</td>
+                <td class="px-5 py-3 text-center">
+                    <span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded text-xs font-medium">
+                        EN TRÁNSITO
+                    </span>
+                </td>
+                <td class="px-5 py-3 text-center text-blue-600 font-medium text-xs">
+                    Esperando camión...
+                </td>
+            </tr>`;
+        }
+
+        // ── Caso B: Stock Crítico ──
+        if (esCritico) {
+            return `
+            <tr id="alerta-row-${p.id}" class="border-b border-slate-100 last:border-0 bg-red-50/40">
+                <td class="px-5 py-3 font-medium text-slate-800">${p.nombre}</td>
+                <td class="px-5 py-3 text-center ${stockColor}">${p.stockActual}</td>
+                <td class="px-5 py-3 text-center text-slate-600">${p.stockMinimo}</td>
+                <td class="px-5 py-3 text-slate-700">${nombreProv}</td>
+                <td class="px-5 py-3 text-center">
+                    <span class="bg-red-100 text-red-800 font-bold px-2.5 py-0.5 rounded text-xs">
+                        CRÍTICO
+                    </span>
+                </td>
+                <td class="px-5 py-3 text-center">
+                    <button onclick="solicitarAProveedor(${p.id})"
+                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
+                        Solicitar a Proveedor
+                    </button>
+                </td>
+            </tr>`;
+        }
+
+        // ── Caso A: Stock Normal ──
         return `
             <tr id="alerta-row-${p.id}" class="border-b border-slate-100 last:border-0">
                 <td class="px-5 py-3 font-medium text-slate-800">${p.nombre}</td>
-                <td class="px-5 py-3 text-center font-bold text-red-600">${p.stockActual}</td>
+                <td class="px-5 py-3 text-center ${stockColor}">${p.stockActual}</td>
                 <td class="px-5 py-3 text-center text-slate-600">${p.stockMinimo}</td>
                 <td class="px-5 py-3 text-slate-700">${nombreProv}</td>
-                <td class="px-5 py-3 text-center">${estadoBadge}</td>
-                <td class="px-5 py-3 text-center">${accionBtn}</td>
+                <td class="px-5 py-3 text-center">
+                    <span class="bg-green-100 text-green-800 font-medium px-2.5 py-0.5 rounded text-xs">
+                        ACTIVO
+                    </span>
+                </td>
+                <td class="px-5 py-3 text-center text-slate-400 italic text-xs">
+                    Stock Suficiente
+                </td>
             </tr>`;
     }).join('');
 }
 
 function solicitarAProveedor(productoId) {
     enTransito.add(productoId);
-    // Actualizar solo la fila afectada sin recargar todo
-    const row = document.getElementById(`alerta-row-${productoId}`);
-    if (row) {
-        row.querySelector('td:nth-child(5)').innerHTML =
-            `<span class="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">En Tránsito</span>`;
-        row.querySelector('td:nth-child(6)').innerHTML =
-            `<span class="text-xs text-slate-400 italic">Solicitud enviada</span>`;
-    }
+    renderTablaAlertas(productosDisponibles);
     mostrarToast('📦 Solicitud enviada al proveedor', 'info');
 }
 
