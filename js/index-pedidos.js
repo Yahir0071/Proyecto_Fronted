@@ -237,6 +237,7 @@ async function cargarPedidos() {
         pedidosDisponibles = await res.json();
         actualizarTablaPedidos(pedidosDisponibles);
         sincronizarSelectsPedidos(pedidosDisponibles);
+        actualizarColaPedidos();
     } catch (e) {
         console.error('Error cargando pedidos:', e);
         mostrarToast('Error al cargar pedidos', 'error');
@@ -251,12 +252,22 @@ function actualizarTablaPedidos(pedidos) {
         return;
     }
 
-    tbody.innerHTML = pedidos.map(ped => `
+    // Mapa explícito de estado → clase CSS
+    const estadoClases = {
+        'PENDIENTE':       'estado-pendiente',
+        'EN_PREPARACION':  'estado-preparacion',
+        'ENVIADO':         'estado-enviado',
+        'ENTREGADO':       'estado-entregado'
+    };
+
+    tbody.innerHTML = pedidos.map(ped => {
+        const claseEstado = estadoClases[ped.estado] || 'estado-pendiente';
+        return `
         <tr class="border-b border-slate-100 last:border-0">
             <td class="px-6 py-3 text-slate-700 font-medium">#${ped.id}</td>
             <td class="px-6 py-3 text-slate-700">${ped.clienteNombre || '-'}</td>
             <td class="px-6 py-3 text-center">
-                <span class="estado-badge estado-${(ped.estado || '').toLowerCase().replace(/_/g, '')}">${ped.estado}</span>
+                <span class="estado-badge ${claseEstado}">${ped.estado}</span>
             </td>
             <td class="px-6 py-3 text-right text-slate-700">S/. ${(ped.total || 0).toFixed(2)}</td>
             <td class="px-6 py-3 text-center">
@@ -268,8 +279,8 @@ function actualizarTablaPedidos(pedidos) {
                 <button onclick="eliminarPedido(${ped.id})"
                     class="btn-accion btn-eliminar">Eliminar</button>
             </td>
-        </tr>
-    `).join('');
+        </tr>`;
+    }).join('');
 }
 
 function sincronizarSelectsPedidos(pedidos) {
@@ -298,6 +309,13 @@ async function cambiarEstado(e) {
         return;
     }
 
+    // Buscar el pedido actual para preservar total y prioridad
+    const pedidoActual = pedidosDisponibles.find(p => p.id === pedidoId);
+    if (!pedidoActual) {
+        mostrarToast('Pedido no encontrado', 'error');
+        return;
+    }
+
     try {
         // Registrar en pila de historial
         await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/estados?estado=${nuevoEstado}`, { method: 'POST' });
@@ -306,7 +324,10 @@ async function cambiarEstado(e) {
         const res = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ estado: nuevoEstado })
+            body: JSON.stringify({ estado: nuevoEstado, 
+                total: pedidoActual.total,       // ← preservar
+                prioridad: pedidoActual.prioridad    // ← preservar 
+            })
         });
 
         if (res.ok) {
@@ -399,11 +420,29 @@ async function deshacerEstado() {
     try {
         const res = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/estados/deshacer`, { method: 'POST' });
 
+        if (res.status === 204 || res.status === 404) {
+            mostrarToast('No hay cambios para deshacer', 'warning');
+            return;
+        }
+
         if (res.ok) {
-            const estado = await res.json();
-            mostrarToast(`↩️ Cambio deshecho: ${estado.estado}`, 'success');
+            const estadoAnterior = await res.json();
+            const pedidoActual = pedidosDisponibles.find(p => p.id === pedidoId);
+
+            // Actualizar estado en BD
+            await fetch(`${API_BASE_URL}/pedidos/${pedidoId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    estado:    estadoAnterior.estado,
+                    total:     pedidoActual?.total    || 0,
+                    prioridad: pedidoActual?.prioridad || 1
+                })
+            });
+
+            mostrarToast(`↩️ Revertido a: ${estadoAnterior.estado}`, 'success');
+            await cargarPedidos(); // refresca tabla HTML
             mostrarHistorialPedido({ target: document.getElementById('historial-pedido') });
-            cargarPedidos();
         } else {
             mostrarToast('No hay cambios para deshacer', 'warning');
         }
