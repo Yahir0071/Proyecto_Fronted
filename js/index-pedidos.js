@@ -120,8 +120,19 @@ function agregarDetalle() {
     const producto = productosDisponibles.find(p => p.id === productoId);
     if (!producto) return;
 
-    // Si ya existe el producto en la lista, sumar cantidad
+    // ✅ NUEVO: Calcular cuánto ya está en la lista del pedido actual
     const existente = detallesPedidoActual.find(d => d.productoId === productoId);
+    const cantidadYaAgregada = existente ? existente.cantidad : 0;
+    const stockDisponible = producto.stockActual - cantidadYaAgregada;
+
+    if (cantidad > stockDisponible) {
+        mostrarToast(
+            `❌ Stock insuficiente para "${producto.nombre}". Disponible: ${stockDisponible}`,
+            'error', 4000
+        );
+        return;
+    }
+
     if (existente) {
         existente.cantidad += cantidad;
     } else {
@@ -129,13 +140,13 @@ function agregarDetalle() {
             productoId,
             nombre:   producto.nombre,
             precio:   producto.precio,
-            cantidad
+            cantidad,
+            stockActual: producto.stockActual
         });
     }
 
-    // Limpiar inputs
-    document.getElementById('detalle-producto').value  = '';
-    document.getElementById('detalle-cantidad').value  = 1;
+    document.getElementById('detalle-producto').value = '';
+    document.getElementById('detalle-cantidad').value = 1;
 
     renderTablaDetalles();
 }
@@ -213,16 +224,18 @@ async function crearPedido() {
 
         if (res.ok) {
             mostrarToast('✅ Pedido creado exitosamente', 'success');
-            // Limpiar formulario
             document.getElementById('pedido-cliente').value   = '';
             document.getElementById('pedido-prioridad').value = '3';
             detallesPedidoActual = [];
             renderTablaDetalles();
+            // NUEVO: recargar productos para reflejar stock actualizado
+            await cargarProductosPedido();
             cargarPedidos();
             actualizarColaPedidos();
         } else {
+            // NUEVO: mostrar error específico del backend (ej. stock insuficiente)
             const err = await res.text();
-            mostrarToast(`Error: ${err}`, 'error');
+            mostrarToast(`❌ ${err}`, 'error', 5000);
         }
     } catch (err) {
         console.error(err);
@@ -393,34 +406,18 @@ async function mostrarHistorialPedido(e) {
         return;
     }
 
-    // El historial vive en memoria del backend (pila), mostramos solo el último estado disponible
-    try {
-        const res    = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/estados/ultimo`);
-        const ultimo = await res.text();
-
-        contenedor.innerHTML = ultimo
-            ? `<div class="historial-item">
-                   <p class="font-semibold text-slate-800">Último estado registrado: 
-                       <span class="text-blue-600">${ultimo}</span>
-                   </p>
-                   <p class="historial-fecha text-xs text-slate-500 mt-1">
-                       Usa el botón "Deshacer" para revertir al estado anterior.
-                   </p>
-               </div>`
-            : '<p class="text-sm text-slate-500">Sin historial registrado en esta sesión.</p>';
-    } catch (err) {
-        contenedor.innerHTML = '<p class="text-sm text-red-500">Error al cargar historial.</p>';
-    }
+    await actualizarContenidoHistorial(pedidoId);
 }
 
 async function deshacerEstado() {
-    const pedidoId = parseInt(document.getElementById('historial-pedido').value);
+    const selectHistorial = document.getElementById('historial-pedido');
+    const pedidoId = parseInt(selectHistorial.value);
     if (!pedidoId) { mostrarToast('Selecciona un pedido', 'warning'); return; }
 
     try {
         const res = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/estados/deshacer`, { method: 'POST' });
 
-        if (res.status === 204 || res.status === 404) {
+        if (res.status === 204) {
             mostrarToast('No hay cambios para deshacer', 'warning');
             return;
         }
@@ -430,7 +427,7 @@ async function deshacerEstado() {
             const pedidoActual = pedidosDisponibles.find(p => p.id === pedidoId);
 
             // Actualizar estado en BD
-            await fetch(`${API_BASE_URL}/pedidos/${pedidoId}`, {
+            const resPut = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -440,15 +437,44 @@ async function deshacerEstado() {
                 })
             });
 
-            mostrarToast(`↩️ Revertido a: ${estadoAnterior.estado}`, 'success');
-            await cargarPedidos(); // refresca tabla HTML
-            mostrarHistorialPedido({ target: document.getElementById('historial-pedido') });
+            if (resPut.ok) {
+                mostrarToast(`↩️ Revertido a: ${estadoAnterior.estado}`, 'success');
+                await cargarPedidos();
+                // Restaurar selección del pedido en el select historial
+                selectHistorial.value = pedidoId;
+                // Actualizar el contenido del historial sin re-disparar eventos
+                actualizarContenidoHistorial(pedidoId);
+            } else {
+                mostrarToast('Error al actualizar estado en BD', 'error');
+            }
         } else {
             mostrarToast('No hay cambios para deshacer', 'warning');
         }
     } catch (err) {
         console.error(err);
         mostrarToast('Error al deshacer cambio', 'error');
+    }
+}
+
+async function actualizarContenidoHistorial(pedidoId) {
+    const contenedor = document.getElementById('historial-contenido');
+    try {
+        const res    = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/estados/ultimo`);
+        const ultimo = await res.text();
+        const estadoLimpio = ultimo.replace(/"/g, '');
+
+        contenedor.innerHTML = estadoLimpio && estadoLimpio !== 'Sin historial en esta sesión'
+            ? `<div class="historial-item">
+                   <p class="font-semibold text-slate-800">Último estado registrado:
+                       <span class="text-blue-600">${estadoLimpio}</span>
+                   </p>
+                   <p class="historial-fecha text-xs text-slate-500 mt-1">
+                       Usa el botón "Deshacer" para revertir al estado anterior.
+                   </p>
+               </div>`
+            : '<p class="text-sm text-slate-500">Sin historial registrado en esta sesión.</p>';
+    } catch (err) {
+        contenedor.innerHTML = '<p class="text-sm text-red-500">Error al cargar historial.</p>';
     }
 }
 
